@@ -31,4 +31,7 @@ android {
     lintOptions {
         disable 'InvalidPackage'
     }
+    dependencies {
+        api 'com.amplitude:android-sdk:2.14.1'
+    }
 }
