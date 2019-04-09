@@ -6,12 +6,17 @@
       methodChannelWithName:@"amplitude_flutter"
             binaryMessenger:[registrar messenger]];
   AmplitudeFlutterPlugin* instance = [[AmplitudeFlutterPlugin alloc] init];
+
+  [[Amplitude instance] initializeApiKey:@"API_KEY"];
+
   [registrar addMethodCallDelegate:instance channel:channel];
 }
 
 - (void)handleMethodCall:(FlutterMethodCall*)call result:(FlutterResult)result {
-  if ([@"getPlatformVersion" isEqualToString:call.method]) {
-    result([@"iOS " stringByAppendingString:[[UIDevice currentDevice] systemVersion]]);
+  if ([@"logEvent" isEqualToString:call.method]) {
+    NSString *eventName = call.arguments[@"name"];
+    [[Amplitude instance] logEvent:eventName];
+    result(nil);
   } else {
     result(FlutterMethodNotImplemented);
   }
