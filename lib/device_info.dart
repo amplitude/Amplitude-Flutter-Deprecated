@@ -27,9 +27,7 @@ class DeviceInfo {
         deviceData = _parseIosInfo(await deviceInfoPlugin.iosInfo);
       }
     } on PlatformException {
-      deviceData = <String, dynamic>{
-        'Error:': 'Failed to get platform version.'
-      };
+      // log error
     }
     _deviceData = deviceData;
     return deviceData;
