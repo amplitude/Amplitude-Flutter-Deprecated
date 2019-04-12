@@ -18,7 +18,7 @@ class Client {
   Client._internal(this.apiKey);
 
   Future<void> post(data) async {
-    return await http.post(apiUrl, body: {
+    await http.post(apiUrl, body: {
       'api_key': apiKey,
       'event': json.encode(data)
     });

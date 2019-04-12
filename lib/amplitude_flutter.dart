@@ -16,8 +16,9 @@ class AmplitudeFlutter {
   @visibleForTesting
   AmplitudeFlutter.private(this.deviceInfo, this.client);
 
-  Future<void> logEvent({@required String name}) async {
+  Future<void> logEvent({ @required String name, Map<String, dynamic> properties = const {} }) async {
     Map<String, dynamic> eventData = { 'event_type': name };
+    eventData.addAll(properties);
 
     Map<String, dynamic> deviceData = deviceInfo.get();
     eventData.addAll(deviceData);

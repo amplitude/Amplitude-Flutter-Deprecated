@@ -26,4 +26,24 @@ void main() {
     amplitude.logEvent(name: "test");
     verify(client.post({ 'event_type': 'test', 'platform': 'iOS' }));
   });
+
+  group('with properties', () {
+    test('logEvent', () {
+      var properties = {
+        'user_properties': {
+          'first_name': 'Joe',
+          'last_name': 'Sample'
+        }
+      };
+      amplitude.logEvent(name: "test", properties: properties);
+      verify(client.post({
+        'event_type': 'test',
+        'platform': 'iOS',
+        'user_properties': {
+          'first_name': 'Joe',
+          'last_name': 'Sample'
+        }
+      }));
+    });
+  });
 }
