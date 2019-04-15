@@ -24,19 +24,27 @@ void main() {
 
   test('logEvent', () async {
     amplitude.logEvent(name: 'test');
-    verify(client.post(<String, String>{'event_type': 'test', 'platform': 'iOS'}));
+    verify(
+        client.post(<String, String>{'event_type': 'test', 'platform': 'iOS'}));
   });
 
   group('with properties', () {
     test('logEvent', () {
-      final Map<String, Map<String, String>> properties = <String, Map<String, String>>{
-        'user_properties': <String, String>{'first_name': 'Joe', 'last_name': 'Sample'}
+      final Map<String, Map<String, String>> properties =
+          <String, Map<String, String>>{
+        'user_properties': <String, String>{
+          'first_name': 'Joe',
+          'last_name': 'Sample'
+        }
       };
       amplitude.logEvent(name: 'test', properties: properties);
       verify(client.post(<String, dynamic>{
         'event_type': 'test',
         'platform': 'iOS',
-        'user_properties': <String, String>{'first_name': 'Joe', 'last_name': 'Sample'}
+        'user_properties': <String, String>{
+          'first_name': 'Joe',
+          'last_name': 'Sample'
+        }
       }));
     });
   });
