@@ -5,9 +5,6 @@ import 'client.dart';
 import 'device_info.dart';
 
 class AmplitudeFlutter {
-  DeviceInfo deviceInfo;
-  Client client;
-
   AmplitudeFlutter(String apiKey) {
     client = Client(apiKey);
     deviceInfo = DeviceInfo();
@@ -16,11 +13,16 @@ class AmplitudeFlutter {
   @visibleForTesting
   AmplitudeFlutter.private(this.deviceInfo, this.client);
 
-  Future<void> logEvent({ @required String name, Map<String, dynamic> properties = const {} }) async {
-    Map<String, dynamic> eventData = { 'event_type': name };
+  DeviceInfo deviceInfo;
+  Client client;
+
+  Future<void> logEvent(
+      {@required String name,
+      Map<String, dynamic> properties = const <String, String>{}}) async {
+    final Map<String, dynamic> eventData = <String, String>{'event_type': name};
     eventData.addAll(properties);
 
-    Map<String, dynamic> deviceData = deviceInfo.get();
+    final Map<String, dynamic> deviceData = deviceInfo.get();
     eventData.addAll(deviceData);
 
     await client.post(eventData);

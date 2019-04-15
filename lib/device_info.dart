@@ -3,19 +3,19 @@ import 'package:flutter/services.dart';
 import 'package:device_info/device_info.dart';
 
 class DeviceInfo {
-  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  Map<String, dynamic> _deviceData = <String, dynamic>{};
-
   DeviceInfo() {
     getPlatformInfo();
   }
+
+  static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
+  Map<String, dynamic> _deviceData = <String, dynamic>{};
 
   Map<String, dynamic> get() {
     return _deviceData;
   }
 
   Future<Map<String, dynamic>> getPlatformInfo() async {
-    if(_deviceData.isNotEmpty) {
+    if (_deviceData.isNotEmpty) {
       return _deviceData;
     }
 
