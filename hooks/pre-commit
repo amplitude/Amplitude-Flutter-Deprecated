@@ -1,0 +1,25 @@
+#!/bin/bash
+
+if ! [ -x "$(command -v flutter)" ]; then
+  echo 'Error: flutter is not installed.' >&2
+  exit 1
+fi
+
+flutter analyze
+
+if [ $? -ne 0 ]; then
+  exit 1
+fi
+
+DARTFMT_OUTPUT=`dartfmt -w . | grep Formatted`
+
+if [ -n "$DARTFMT_OUTPUT" ]; then
+  echo "Runing dartfmt..."
+  echo $DARTFMT_OUTPUT
+  echo "Changes not committed. Re-attempt commit."
+  exit 1
+else
+  echo "Dart files formatted correctly."
+  exit 0
+
+fi

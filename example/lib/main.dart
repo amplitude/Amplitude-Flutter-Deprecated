@@ -1,5 +1,5 @@
-import 'package:flutter/material.dart';
 import 'dart:async';
+import 'package:flutter/material.dart';
 
 import 'package:amplitude_flutter/amplitude_flutter.dart';
 
@@ -17,14 +17,14 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    analytics = new AmplitudeFlutter("API_KEY");
+    analytics = AmplitudeFlutter('API_KEY');
   }
 
   Future<void> _sendEvent() async {
-    await analytics.logEvent(name: "Dart Click");
+    await analytics.logEvent(name: 'Dart Click');
 
     setState(() {
-      _message = "Sent.";
+      _message = 'Sent.';
     });
   }
 
@@ -40,17 +40,12 @@ class _MyAppState extends State<MyApp> {
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: <Widget>[
               RaisedButton(
-                child: Text(
-                  'Send Event'
-                ),
+                child: const Text('Send Event'),
                 onPressed: _sendEvent,
               ),
               Text(
                 _message,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 22
-                ),
+                style: TextStyle(color: Colors.black, fontSize: 22),
               )
             ],
           ),
