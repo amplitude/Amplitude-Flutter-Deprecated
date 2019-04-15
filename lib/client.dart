@@ -1,8 +1,10 @@
 import 'dart:convert';
+import 'package:crypto/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
 
 class Client {
-  static const String apiUrl = 'https://api.amplitude.com/httpapi';
+  static const String apiUrl = 'https://api.amplitude.com/';
+  static const String apiVersion = '2';
   static Client _instance;
 
   final String apiKey;
@@ -18,9 +20,17 @@ class Client {
   Client._internal(this.apiKey);
 
   Future<void> post(data) async {
+    String uploadTime = DateTime.now().millisecondsSinceEpoch.toString();
+    String events = json.encode(data);
+    String checksum = apiVersion + apiKey + events + uploadTime;
+    String md5 = crypto.md5.convert(utf8.encode(checksum)).toString();
+
     await http.post(apiUrl, body: {
-      'api_key': apiKey,
-      'event': json.encode(data)
+      'client': apiKey,
+      'e': events,
+      'v': apiVersion,
+      'upload_time': uploadTime,
+      'checksum': md5
     });
   }
 }

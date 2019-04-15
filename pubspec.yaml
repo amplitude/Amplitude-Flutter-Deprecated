@@ -12,6 +12,7 @@ dependencies:
     sdk: flutter
   device_info: "0.4.0+1"
   http: "0.12.0+2"
+  crypto: "2.0.6"
 
 dev_dependencies:
   flutter_test:
