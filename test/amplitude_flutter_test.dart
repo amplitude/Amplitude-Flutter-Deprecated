@@ -17,7 +17,7 @@ void main() {
 
   setUp(() {
     when(deviceInfo.get())
-        .thenAnswer((_) => <String, dynamic>{'platform': 'iOS'});
+        .thenAnswer((_) => <String, String>{'platform': 'iOS'});
 
     amplitude = AmplitudeFlutter.private(deviceInfo, client);
   });
