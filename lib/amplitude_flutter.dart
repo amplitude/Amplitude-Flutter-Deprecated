@@ -1,8 +1,10 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import 'client.dart';
 import 'device_info.dart';
+import 'identify.dart';
 import 'session.dart';
 
 class AmplitudeFlutter {
@@ -26,7 +28,7 @@ class AmplitudeFlutter {
       Map<String, dynamic> properties = const <String, String>{}}) async {
     session.refresh();
     final String sessionId = session.getSessionId();
-    final Map<String, dynamic> eventData = <String, String>{
+    final Map<String, dynamic> eventData = <String, dynamic>{
       'event_type': name,
       'session_id': sessionId
     };
@@ -36,5 +38,9 @@ class AmplitudeFlutter {
     eventData.addAll(deviceData);
 
     await client.post(eventData);
+  }
+
+  Future<void> identify(Identify identify) async {
+    return logEvent(name: r'$identify', properties: identify.payload);
   }
 }

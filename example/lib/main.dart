@@ -1,7 +1,8 @@
 import 'dart:async';
-import 'package:flutter/material.dart';
 
 import 'package:amplitude_flutter/amplitude_flutter.dart';
+import 'package:amplitude_flutter/identify.dart';
+import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
 
@@ -28,6 +29,19 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> _sendIdentify() async {
+    final Identify identify = Identify()
+      ..set('identify_test',
+          'identify sent at ${DateTime.now().millisecondsSinceEpoch}')
+      ..add('identify_count', 1);
+
+    await analytics.identify(identify);
+
+    setState(() {
+      _message = 'Identify Sent.';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -42,6 +56,10 @@ class _MyAppState extends State<MyApp> {
               RaisedButton(
                 child: const Text('Send Event'),
                 onPressed: _sendEvent,
+              ),
+              RaisedButton(
+                child: const Text('Identify Event'),
+                onPressed: _sendIdentify,
               ),
               Text(
                 _message,
