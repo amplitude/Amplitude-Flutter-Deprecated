@@ -71,7 +71,7 @@ class Identify {
     addOp(OP_SET_ONCE, key, value);
   }
 
-  void add(String key, int value) {
+  void add(String key, num value) {
     addOp(OP_ADD, key, value);
   }
 
