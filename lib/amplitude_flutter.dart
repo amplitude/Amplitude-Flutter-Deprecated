@@ -15,7 +15,7 @@ class AmplitudeFlutter {
   }
 
   @visibleForTesting
-  AmplitudeFlutter.private(this.deviceInfo, this.client);
+  AmplitudeFlutter.private(this.deviceInfo, this.client, this.session);
 
   DeviceInfo deviceInfo;
   Client client;
@@ -26,7 +26,7 @@ class AmplitudeFlutter {
       Map<String, dynamic> properties = const <String, String>{}}) async {
     session.refresh();
     final String sessionId = session.getSessionId();
-    final Map<String, dynamic> eventData = <String, String>{
+    final Map<String, dynamic> eventData = <String, dynamic>{
       'event_type': name,
       'session_id': sessionId
     };
