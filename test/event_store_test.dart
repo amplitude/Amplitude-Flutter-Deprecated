@@ -33,7 +33,7 @@ void main() {
       });
     });
 
-    group('.pop', () {
+    group('.dequeue', () {
       test('removes a specified number of the oldest events in the store', () {
         expect(subject.length, equals(0));
 
