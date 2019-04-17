@@ -1,4 +1,4 @@
-import 'package:amplitude_flutter/event_store.dart';
+import 'package:amplitude_flutter/src/event_store.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
