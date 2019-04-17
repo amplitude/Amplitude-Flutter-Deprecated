@@ -6,7 +6,6 @@ Amplitude SDK for Flutter.
 
 ```dart
 import 'package:amplitude_flutter/amplitude_flutter.dart';
-import 'package:amplitude_flutter/identify.dart';
 
 Future<void> example() async {
   final AmplitudeFlutter analytics =  AmplitudeFlutter('API KEY');

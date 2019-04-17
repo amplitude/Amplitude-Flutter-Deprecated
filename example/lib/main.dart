@@ -1,7 +1,6 @@
 import 'dart:async';
 
 import 'package:amplitude_flutter/amplitude_flutter.dart';
-import 'package:amplitude_flutter/identify.dart';
 import 'package:flutter/material.dart';
 
 void main() => runApp(MyApp());
