@@ -1,14 +1,26 @@
 # amplitude_flutter
 
-A new flutter plugin project.
+Amplitude SDK for Flutter.
 
-## Getting Started
+## Usage
 
-This project is a starting point for a Flutter
-[plug-in package](https://flutter.io/developing-packages/),
-a specialized package that includes platform-specific implementation code for
-Android and/or iOS.
+```dart
+import 'package:amplitude_flutter/amplitude_flutter.dart';
 
-For help getting started with Flutter, view our 
-[online documentation](https://flutter.io/docs), which offers tutorials, 
-samples, guidance on mobile development, and a full API reference.
+Future<void> example() async {
+  final AmplitudeFlutter analytics =  AmplitudeFlutter('API KEY');
+
+  // log an event
+  await analytics.logEvent(name: 'Dart Click');
+
+  // identify a user
+  final Identify identify = Identify()
+    ..set('cohort', 'Test A')
+    ..setOnce('completed_onboarding', 'true')
+    ..add('login_count', 1)
+    ..append('tags', 'new tag')
+    ..unset('demo_user');
+
+  await analytics.identify(identify);
+}
+```
