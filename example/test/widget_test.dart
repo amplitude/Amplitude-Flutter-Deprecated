@@ -11,17 +11,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:amplitude_flutter_example/main.dart';
 
 void main() {
-  testWidgets('Verify Platform version', (WidgetTester tester) async {
-    // Build our app and trigger a frame.
+  testWidgets('MyApp shows Send Event button', (WidgetTester tester) async {
     await tester.pumpWidget(MyApp());
 
-    // Verify that platform version is retrieved.
-    expect(
-      find.byWidgetPredicate(
-        (Widget widget) =>
-            widget is Text && widget.data.startsWith('Running on:'),
-      ),
-      findsOneWidget,
-    );
+    expect(find.byWidget(const Text('Send Event')), findsOneWidget);
   });
 }

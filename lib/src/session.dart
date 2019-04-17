@@ -1,5 +1,5 @@
 import 'package:flutter/widgets.dart';
-import 'package:amplitude_flutter/time_utils.dart';
+import './time_utils.dart';
 
 class Session with WidgetsBindingObserver {
   factory Session({int timeout = defaultTimeout}) {

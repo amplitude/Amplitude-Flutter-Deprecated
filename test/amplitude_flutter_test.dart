@@ -2,9 +2,9 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:amplitude_flutter/amplitude_flutter.dart';
-import 'package:amplitude_flutter/device_info.dart';
-import 'package:amplitude_flutter/client.dart';
-import 'package:amplitude_flutter/session.dart';
+import 'package:amplitude_flutter/src/client.dart';
+import 'package:amplitude_flutter/src/device_info.dart';
+import 'package:amplitude_flutter/src/session.dart';
 
 class MockClient extends Mock implements Client {}
 
