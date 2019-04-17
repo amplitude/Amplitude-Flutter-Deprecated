@@ -8,18 +8,18 @@ class DeviceInfo {
   }
 
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
-  Map<String, dynamic> _deviceData = <String, dynamic>{};
+  Map<String, String> _deviceData = <String, String>{};
 
-  Map<String, dynamic> get() {
+  Map<String, String> get() {
     return _deviceData;
   }
 
-  Future<Map<String, dynamic>> getPlatformInfo() async {
+  Future<Map<String, String>> getPlatformInfo() async {
     if (_deviceData.isNotEmpty) {
       return _deviceData;
     }
 
-    Map<String, dynamic> deviceData;
+    Map<String, String> deviceData;
     try {
       if (Platform.isAndroid) {
         deviceData = _parseAndroidInfo(await deviceInfoPlugin.androidInfo);
@@ -33,8 +33,8 @@ class DeviceInfo {
     return deviceData;
   }
 
-  Map<String, dynamic> _parseAndroidInfo(AndroidDeviceInfo build) {
-    return <String, dynamic>{
+  Map<String, String> _parseAndroidInfo(AndroidDeviceInfo build) {
+    return <String, String>{
       'os_name': build.version.baseOS,
       'device_brand': build.brand,
       'device_model': build.device,
@@ -44,8 +44,8 @@ class DeviceInfo {
     };
   }
 
-  Map<String, dynamic> _parseIosInfo(IosDeviceInfo data) {
-    return <String, dynamic>{
+  Map<String, String> _parseIosInfo(IosDeviceInfo data) {
+    return <String, String>{
       'os_name': data.systemName,
       'os_version': data.systemVersion,
       'device_brand': data.name,
