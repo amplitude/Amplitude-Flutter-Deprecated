@@ -19,9 +19,10 @@ class Client {
 
   final String apiKey;
 
-  Future<void> post(Map<String, dynamic> data) async {
+  /// eventData is either a Map<String, dynamic> or a List<Map<String, dynamic>>
+  Future<void> post(dynamic eventData) async {
     final String uploadTime = DateTime.now().millisecondsSinceEpoch.toString();
-    final String events = json.encode(data);
+    final String events = json.encode(eventData);
     final String checksum = apiVersion + apiKey + events + uploadTime;
     final String md5 = crypto.md5.convert(utf8.encode(checksum)).toString();
 

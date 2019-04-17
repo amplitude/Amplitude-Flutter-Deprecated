@@ -17,7 +17,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    analytics = AmplitudeFlutter('API_KEY');
+    analytics = AmplitudeFlutter('API_KEY'); // DO NOT CHECK IN
   }
 
   Future<void> _sendEvent() async {
@@ -41,6 +41,14 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> _flushEvents() async {
+    await analytics.flushEvents();
+
+    setState(() {
+      _message = 'Events flushed.';
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
@@ -59,6 +67,10 @@ class _MyAppState extends State<MyApp> {
               RaisedButton(
                 child: const Text('Identify Event'),
                 onPressed: _sendIdentify,
+              ),
+              RaisedButton(
+                child: const Text('Flush Events'),
+                onPressed: _flushEvents,
               ),
               Text(
                 _message,
