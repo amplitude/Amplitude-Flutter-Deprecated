@@ -3,7 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import 'client.dart';
 import 'device_info.dart';
-import 'event_store.dart';
+import 'event_buffer.dart';
 import 'identify.dart';
 import 'session.dart';
 
@@ -11,19 +11,22 @@ class AmplitudeFlutter {
   AmplitudeFlutter(String apiKey, {int timeout}) {
     client = Client(apiKey);
     deviceInfo = DeviceInfo();
-
     session = Session(timeout: timeout);
+
+    _init();
+
     session.start();
   }
 
   @visibleForTesting
-  AmplitudeFlutter.private(this.deviceInfo, this.client, this.session);
+  AmplitudeFlutter.private(this.deviceInfo, this.client, this.session) {
+    _init();
+  }
 
   DeviceInfo deviceInfo;
   Client client;
   Session session;
-
-  final EventStore eventStore = EventStore();
+  EventBuffer buffer;
 
   Future<void> logEvent(
       {@required String name,
@@ -39,7 +42,7 @@ class AmplitudeFlutter {
     final Map<String, String> deviceData = deviceInfo.get();
     eventData.addAll(deviceData);
 
-    eventStore.enqueue(eventData);
+    buffer.add(eventData);
 
     await Future.value(null);
   }
@@ -48,13 +51,9 @@ class AmplitudeFlutter {
     return logEvent(name: r'$identify', properties: identify.payload);
   }
 
-  Future<void> flushEvents() async {
-    const int maxBatch = 100;
+  Future<void> flushEvents() => buffer.flush();
 
-    if (eventStore.length > 0) {
-      await client.post(eventStore.dequeue(maxBatch));
-    } else {
-      await Future.value(null);
-    }
+  void _init() {
+    buffer = EventBuffer(client, size: 8);
   }
 }

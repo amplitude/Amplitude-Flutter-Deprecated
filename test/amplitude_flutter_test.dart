@@ -2,26 +2,12 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:amplitude_flutter/amplitude_flutter.dart';
-import 'package:amplitude_flutter/src/client.dart';
 import 'package:amplitude_flutter/src/device_info.dart';
 import 'package:amplitude_flutter/src/identify.dart';
 import 'package:amplitude_flutter/src/session.dart';
 
 import 'matchers.dart';
-
-class MockClient implements Client {
-  @override
-  String apiKey;
-
-  final List<dynamic> callArgs = <dynamic>[];
-
-  @override
-  Future<void> post(dynamic eventData) async {
-    callArgs.add(eventData);
-  }
-
-  void reset() => callArgs.clear();
-}
+import 'mock_client.dart';
 
 class MockDeviceInfo extends Mock implements DeviceInfo {}
 
@@ -50,7 +36,7 @@ void main() {
       ..flushEvents();
 
     expect(
-        client.callArgs.single.single,
+        client.postCalls.single.single,
         ContainsSubMap(<String, dynamic>{
           'event_type': 'test',
           'session_id': '123',
@@ -65,7 +51,7 @@ void main() {
       ..flushEvents();
 
     expect(
-        client.callArgs.single.single,
+        client.postCalls.single.single,
         ContainsSubMap(<String, dynamic>{
           'event_type': r'$identify',
           'session_id': '123',
@@ -91,7 +77,7 @@ void main() {
         ..flushEvents();
 
       expect(
-          client.callArgs.single.single,
+          client.postCalls.single.single,
           ContainsSubMap(<String, dynamic>{
             'event_type': 'test',
             'session_id': '123',
