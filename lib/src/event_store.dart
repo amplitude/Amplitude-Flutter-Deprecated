@@ -1,8 +1,6 @@
 import 'dart:math';
 
 class EventStore {
-  EventStore();
-
   // Swap this for a durable backing store
   final List<Map<String, dynamic>> events = [];
 

@@ -4,9 +4,24 @@ import 'package:mockito/mockito.dart';
 import 'package:amplitude_flutter/amplitude_flutter.dart';
 import 'package:amplitude_flutter/src/client.dart';
 import 'package:amplitude_flutter/src/device_info.dart';
+import 'package:amplitude_flutter/src/identify.dart';
 import 'package:amplitude_flutter/src/session.dart';
 
-class MockClient extends Mock implements Client {}
+import 'matchers.dart';
+
+class MockClient implements Client {
+  @override
+  String apiKey;
+
+  final List<dynamic> callArgs = <dynamic>[];
+
+  @override
+  Future<void> post(dynamic eventData) async {
+    callArgs.add(eventData);
+  }
+
+  void reset() => callArgs.clear();
+}
 
 class MockDeviceInfo extends Mock implements DeviceInfo {}
 
@@ -24,16 +39,42 @@ void main() {
         .thenAnswer((_) => <String, String>{'platform': 'iOS'});
     when(session.getSessionId()).thenAnswer((_) => '123');
 
+    client.reset();
+
     amplitude = AmplitudeFlutter.private(deviceInfo, client, session);
   });
 
   test('logEvent', () async {
-    amplitude.logEvent(name: 'test');
-    verify(client.post(<String, String>{
-      'event_type': 'test',
-      'session_id': '123',
-      'platform': 'iOS'
-    }));
+    amplitude
+      ..logEvent(name: 'test')
+      ..flushEvents();
+
+    expect(
+        client.callArgs.single.single,
+        ContainsSubMap(<String, dynamic>{
+          'event_type': 'test',
+          'session_id': '123',
+          'platform': 'iOS',
+          'timestamp': isInstanceOf<int>()
+        }));
+  });
+
+  test('identify', () async {
+    amplitude
+      ..identify(Identify()..set('cohort', 'test a'))
+      ..flushEvents();
+
+    expect(
+        client.callArgs.single.single,
+        ContainsSubMap(<String, dynamic>{
+          'event_type': r'$identify',
+          'session_id': '123',
+          'user_properties': {
+            r'$set': {'cohort': 'test a'}
+          },
+          'platform': 'iOS',
+          'timestamp': isInstanceOf<int>()
+        }));
   });
 
   group('with properties', () {
@@ -45,16 +86,19 @@ void main() {
           'last_name': 'Sample'
         }
       };
-      amplitude.logEvent(name: 'test', properties: properties);
-      verify(client.post(<String, dynamic>{
-        'event_type': 'test',
-        'platform': 'iOS',
-        'session_id': '123',
-        'user_properties': <String, String>{
-          'first_name': 'Joe',
-          'last_name': 'Sample'
-        }
-      }));
+      amplitude
+        ..logEvent(name: 'test', properties: properties)
+        ..flushEvents();
+
+      expect(
+          client.callArgs.single.single,
+          ContainsSubMap(<String, dynamic>{
+            'event_type': 'test',
+            'session_id': '123',
+            'user_properties': {'first_name': 'Joe', 'last_name': 'Sample'},
+            'platform': 'iOS',
+            'timestamp': isInstanceOf<int>()
+          }));
     });
   });
 }
