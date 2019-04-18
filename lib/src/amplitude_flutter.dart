@@ -3,6 +3,7 @@ import 'package:flutter/foundation.dart';
 
 import 'client.dart';
 import 'device_info.dart';
+import 'event.dart';
 import 'event_buffer.dart';
 import 'identify.dart';
 import 'session.dart';
@@ -32,17 +33,12 @@ class AmplitudeFlutter {
       {@required String name,
       Map<String, dynamic> properties = const <String, String>{}}) async {
     session.refresh();
-    final String sessionId = session.getSessionId();
-    final Map<String, dynamic> eventData = <String, dynamic>{
-      'event_type': name,
-      'session_id': sessionId
-    };
-    eventData.addAll(properties);
 
-    final Map<String, String> deviceData = deviceInfo.get();
-    eventData.addAll(deviceData);
+    final Event event =
+        Event(name, sessionId: session.getSessionId(), props: properties)
+          ..addProps(deviceInfo.get());
 
-    buffer.add(eventData);
+    buffer.add(event);
 
     await Future.value(null);
   }
