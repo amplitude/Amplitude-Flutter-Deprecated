@@ -55,6 +55,7 @@ void main() {
               'event_type': 'flush test',
               'timestamp': isInstanceOf<int>()
             }));
+        expect(client.postCalls.single, isList);
       });
     });
 
