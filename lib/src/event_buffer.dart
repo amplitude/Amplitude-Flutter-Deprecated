@@ -29,7 +29,8 @@ class EventBuffer {
   /// Flushes all events in buffer
   Future<void> flush() async {
     if (length > 0) {
-      final payload = dequeue(length).map((e) => e.toPayload());
+      final List<Map<String, dynamic>> payload =
+          dequeue(length).map((e) => e.toPayload()).toList();
       await client.post(payload);
     } else {
       await Future.value(null);
