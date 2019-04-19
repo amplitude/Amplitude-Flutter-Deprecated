@@ -1,7 +1,7 @@
 name: amplitude_flutter
 description: A new flutter plugin project.
 version: 0.0.1
-author:
+author: Amplitude <platform@amplitude.com>
 homepage: https://github.com/amplitude/Amplitude-Flutter
 
 environment:
