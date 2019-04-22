@@ -2,7 +2,7 @@ import 'package:flutter/widgets.dart';
 import './time_utils.dart';
 
 class Session with WidgetsBindingObserver {
-  factory Session({int timeout = defaultTimeout}) {
+  factory Session(int timeout) {
     if (_instance != null) {
       return _instance;
     }
@@ -23,7 +23,6 @@ class Session with WidgetsBindingObserver {
   static Session _instance;
   TimeUtils _time;
 
-  static const int defaultTimeout = 300000;
   int timeout;
   int sessionStart;
   int lastActivity;
