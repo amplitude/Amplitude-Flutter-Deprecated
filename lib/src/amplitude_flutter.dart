@@ -38,7 +38,9 @@ class AmplitudeFlutter {
   }
 
   Future<void> identify(Identify identify) async {
-    logEvent(name: r'$identify', properties: identify.payload);
+    return logEvent(
+        name: r'$identify',
+        properties: <String, dynamic>{'user_properties': identify.payload});
   }
 
   Future<void> flushEvents() => buffer.flush();

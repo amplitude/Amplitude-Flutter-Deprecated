@@ -10,13 +10,8 @@ void main() {
     });
 
     group('default constructor', () {
-      test(r'sets a blank $identify payload', () {
-        expect(
-            subject.payload,
-            equals({
-              'event_type': r'$identify',
-              'user_properties': <String, dynamic>{}
-            }));
+      test('sets a blank identify payload', () {
+        expect(subject.payload, equals(<String, dynamic>{}));
       });
     });
 
@@ -27,10 +22,7 @@ void main() {
             subject.payload,
             equals(
               {
-                'event_type': r'$identify',
-                'user_properties': {
-                  r'$set': {'cohort': 'Test A'}
-                }
+                r'$set': {'cohort': 'Test A'}
               },
             ));
       });
@@ -41,10 +33,7 @@ void main() {
             subject.payload,
             equals(
               {
-                'event_type': r'$identify',
-                'user_properties': {
-                  r'$setOnce': {'cohort': 'Test A'}
-                }
+                r'$setOnce': {'cohort': 'Test A'}
               },
             ));
       });
@@ -55,10 +44,7 @@ void main() {
             subject.payload,
             equals(
               {
-                'event_type': r'$identify',
-                'user_properties': {
-                  r'$add': {'login_count': 1}
-                }
+                r'$add': {'login_count': 1}
               },
             ));
       });
@@ -69,10 +55,7 @@ void main() {
             subject.payload,
             equals(
               {
-                'event_type': r'$identify',
-                'user_properties': {
-                  r'$append': {'tags': 'new tag'}
-                }
+                r'$append': {'tags': 'new tag'}
               },
             ));
       });
@@ -83,10 +66,7 @@ void main() {
             subject.payload,
             equals(
               {
-                'event_type': r'$identify',
-                'user_properties': {
-                  r'$unset': {'demo_user': '-'}
-                }
+                r'$unset': {'demo_user': '-'}
               },
             ));
       });
@@ -103,14 +83,11 @@ void main() {
             subject.payload,
             equals(
               {
-                'event_type': r'$identify',
-                'user_properties': {
-                  r'$set': {'cohort': 'Test A'},
-                  r'$setOnce': {'completed_onboarding': 'true'},
-                  r'$add': {'login_count': 1},
-                  r'$unset': {'demo_user': '-'},
-                  r'$append': {'tags': 'new tag'},
-                }
+                r'$set': {'cohort': 'Test A'},
+                r'$setOnce': {'completed_onboarding': 'true'},
+                r'$add': {'login_count': 1},
+                r'$unset': {'demo_user': '-'},
+                r'$append': {'tags': 'new tag'},
               },
             ));
       });
@@ -121,7 +98,7 @@ void main() {
 
       test(r'adds an user property operation', () {
         subject.addOp(op, 'cohort', 'Test A');
-        expect(subject.userProps, containsPair(op, {'cohort': 'Test A'}));
+        expect(subject.payload, containsPair(op, {'cohort': 'Test A'}));
       });
 
       test(r'adds multiple properties for an operation', () {
@@ -130,7 +107,7 @@ void main() {
           ..addOp(op, 'interests', ['chess', 'football']);
 
         expect(
-            subject.userProps,
+            subject.payload,
             containsPair(op, {
               'cohort': 'Test A',
               'interests': ['chess', 'football']
@@ -140,7 +117,7 @@ void main() {
       test(r'overwrites entries with the same key for a given operation', () {
         subject..addOp(op, 'cohort', 'Test A')..addOp(op, 'cohort', 'Test B');
 
-        expect(subject.userProps, containsPair(op, {'cohort': 'Test B'}));
+        expect(subject.payload, containsPair(op, {'cohort': 'Test B'}));
       });
     });
   });
