@@ -9,10 +9,10 @@ import 'identify.dart';
 import 'session.dart';
 
 class AmplitudeFlutter {
-  AmplitudeFlutter(String apiKey, {int timeout}) {
+  AmplitudeFlutter(String apiKey, {int timeout = defaultTimeout}) {
     client = Client(apiKey);
     deviceInfo = DeviceInfo();
-    session = Session(timeout: timeout);
+    session = Session(timeout);
 
     _init();
 
@@ -24,6 +24,7 @@ class AmplitudeFlutter {
     _init();
   }
 
+  static const int defaultTimeout = 300000;
   DeviceInfo deviceInfo;
   Client client;
   Session session;
