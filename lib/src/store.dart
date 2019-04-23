@@ -24,16 +24,16 @@ class Store {
   int length = 0;
 
   Future<int> add(Event event) async {
-    length++;
     final db = await _getDb();
     final result = await db.insert(EVENTS_TABLE, _serialize(event));
+    length++;
     return result;
   }
 
   Future<void> empty() async {
-    length = 0;
     final db = await _getDb();
     await db.rawDelete('DELETE FROM $EVENTS_TABLE; VACUUM;');
+    length = 0;
   }
 
   Future<int> count() async {
