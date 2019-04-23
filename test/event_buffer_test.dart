@@ -5,18 +5,19 @@ import 'package:amplitude_flutter/src/event_buffer.dart';
 
 import 'matchers.dart';
 import 'mock_client.dart';
-import 'mock_store.dart';
+import 'mock_service_provider.dart';
 
 void main() {
   group('EventBuffer', () {
-    EventBuffer subject;
+    MockServiceProvider provider;
     MockClient client;
-    MockStore store;
+
+    EventBuffer subject;
 
     setUp(() {
-      client = MockClient();
-      store = MockStore();
-      subject = EventBuffer.private(client, store);
+      provider = MockServiceProvider();
+      client = provider.client;
+      subject = EventBuffer(provider);
     });
 
     group('.length', () {
@@ -44,7 +45,7 @@ void main() {
       });
 
       test('flushes the buffer when the buffer size is reached', () async {
-        subject = EventBuffer.private(client, store, size: 2);
+        subject = EventBuffer(provider, size: 2);
 
         await subject.add(Event('flush test'));
         expect(client.postCallCount, equals(0));

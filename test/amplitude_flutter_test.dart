@@ -2,35 +2,32 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:amplitude_flutter/amplitude_flutter.dart';
-import 'package:amplitude_flutter/src/device_info.dart';
-import 'package:amplitude_flutter/src/identify.dart';
-import 'package:amplitude_flutter/src/session.dart';
 
 import 'matchers.dart';
 import 'mock_client.dart';
-import 'mock_store.dart';
-
-class MockDeviceInfo extends Mock implements DeviceInfo {}
-
-class MockSession extends Mock implements Session {}
+import 'mock_service_provider.dart';
 
 void main() {
   AmplitudeFlutter amplitude;
 
-  final MockClient client = MockClient();
-  final MockDeviceInfo deviceInfo = MockDeviceInfo();
-  final MockSession session = MockSession();
-  MockStore store;
+  MockClient client;
+  MockDeviceInfo deviceInfo;
+  MockSession session;
+  MockServiceProvider provider;
 
   setUp(() {
-    store = MockStore();
+    provider = MockServiceProvider();
+    client = provider.client;
+    deviceInfo = provider.deviceInfo;
+    session = provider.session;
+
     when(deviceInfo.get())
         .thenAnswer((_) => <String, String>{'platform': 'iOS'});
     when(session.getSessionId()).thenAnswer((_) => '123');
 
     client.reset();
 
-    amplitude = AmplitudeFlutter.private(deviceInfo, client, session, store);
+    amplitude = AmplitudeFlutter.private(provider);
   });
 
   test('logEvent', () async {
