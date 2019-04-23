@@ -8,6 +8,7 @@ import 'package:amplitude_flutter/src/session.dart';
 
 import 'matchers.dart';
 import 'mock_client.dart';
+import 'mock_store.dart';
 
 class MockDeviceInfo extends Mock implements DeviceInfo {}
 
@@ -19,21 +20,22 @@ void main() {
   final MockClient client = MockClient();
   final MockDeviceInfo deviceInfo = MockDeviceInfo();
   final MockSession session = MockSession();
+  MockStore store;
 
   setUp(() {
+    store = MockStore();
     when(deviceInfo.get())
         .thenAnswer((_) => <String, String>{'platform': 'iOS'});
     when(session.getSessionId()).thenAnswer((_) => '123');
 
     client.reset();
 
-    amplitude = AmplitudeFlutter.private(deviceInfo, client, session);
+    amplitude = AmplitudeFlutter.private(deviceInfo, client, session, store);
   });
 
   test('logEvent', () async {
-    amplitude
-      ..logEvent(name: 'test')
-      ..flushEvents();
+    await amplitude.logEvent(name: 'test');
+    await amplitude.flushEvents();
 
     expect(
         client.postCalls.single.single,
@@ -46,9 +48,8 @@ void main() {
   });
 
   test('identify', () async {
-    amplitude
-      ..identify(Identify()..set('cohort', 'test a'))
-      ..flushEvents();
+    await amplitude.identify(Identify()..set('cohort', 'test a'));
+    await amplitude.flushEvents();
 
     expect(
         client.postCalls.single.single,
@@ -64,7 +65,7 @@ void main() {
   });
 
   group('with properties', () {
-    test('logEvent', () {
+    test('logEvent', () async {
       final Map<String, Map<String, String>> properties =
           <String, Map<String, String>>{
         'user_properties': <String, String>{
@@ -72,9 +73,8 @@ void main() {
           'last_name': 'Sample'
         }
       };
-      amplitude
-        ..logEvent(name: 'test', properties: properties)
-        ..flushEvents();
+      await amplitude.logEvent(name: 'test', properties: properties);
+      await amplitude.flushEvents();
 
       expect(
           client.postCalls.single.single,

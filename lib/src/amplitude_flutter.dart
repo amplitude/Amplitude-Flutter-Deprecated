@@ -7,12 +7,14 @@ import 'event.dart';
 import 'event_buffer.dart';
 import 'identify.dart';
 import 'session.dart';
+import 'store.dart';
 
 class AmplitudeFlutter {
   AmplitudeFlutter(String apiKey, {int timeout = defaultTimeout}) {
     client = Client(apiKey);
     deviceInfo = DeviceInfo();
     session = Session(timeout);
+    store = Store();
 
     _init();
 
@@ -20,7 +22,8 @@ class AmplitudeFlutter {
   }
 
   @visibleForTesting
-  AmplitudeFlutter.private(this.deviceInfo, this.client, this.session) {
+  AmplitudeFlutter.private(
+      this.deviceInfo, this.client, this.session, this.store) {
     _init();
   }
 
@@ -28,6 +31,7 @@ class AmplitudeFlutter {
   DeviceInfo deviceInfo;
   Client client;
   Session session;
+  Store store;
   EventBuffer buffer;
 
   Future<void> logEvent(
@@ -51,6 +55,6 @@ class AmplitudeFlutter {
   Future<void> flushEvents() => buffer.flush();
 
   void _init() {
-    buffer = EventBuffer(client, size: 8);
+    buffer = EventBuffer(client, store, size: 8);
   }
 }
