@@ -1,4 +1,5 @@
 # amplitude_flutter
+
 A Flutter plugin for tracking events to [Amplitude](https://www.amplitude.com).
 
 ## Usage
@@ -30,6 +31,16 @@ Future<void> example() async {
     ..unset('demo_user');
 
   await analytics.identify(identify);
+
+  // Amplitude Accounts [https://amplitude.zendesk.com/hc/en-us/articles/115001765532-Accounts] methods:
+  // add a user to a group
+  analytics.setGroup('orgId', 15);
+
+  // change properties of a group
+  analytics.groupIdentify('orgId', 15, Identify()..set('account_manager', 456));
+
+  // emit an event associated with a group
+  analytics.logEvent('Demo Released', properties: { 'groups': { 'orgId': 15 } });
 }
 ```
 
