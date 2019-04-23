@@ -34,7 +34,7 @@ class AmplitudeFlutter {
         Event(name, sessionId: session.getSessionId(), props: properties)
           ..addProps(deviceInfo.get());
 
-    buffer.add(event);
+    return buffer.add(event);
   }
 
   Future<void> identify(Identify identify,

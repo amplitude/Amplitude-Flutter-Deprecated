@@ -62,9 +62,9 @@ void main() {
   });
 
   test('groupIdentify', () async {
-    amplitude
-      ..groupIdentify('orgId', 15, Identify()..set('num employees', '1000+'))
-      ..flushEvents();
+    await amplitude.groupIdentify(
+        'orgId', 15, Identify()..set('num employees', '1000+'));
+    await amplitude.flushEvents();
 
     expect(
         client.postCalls.single.single,
@@ -81,9 +81,8 @@ void main() {
   });
 
   test('setGroup', () async {
-    amplitude
-      ..setGroup('orgId', 15)
-      ..flushEvents();
+    await amplitude.setGroup('orgId', 15);
+    await amplitude.flushEvents();
 
     expect(
         client.postCalls.single.single,
