@@ -37,12 +37,23 @@ class AmplitudeFlutter {
     buffer.add(event);
   }
 
-  Future<void> identify(Identify identify) async {
+  Future<void> identify(Identify identify,
+      {Map<String, dynamic> properties = const <String, dynamic>{}}) async {
     return logEvent(
         name: r'$identify',
-        properties: <String, dynamic>{'user_properties': identify.payload});
+        properties: <String, dynamic>{'user_properties': identify.payload}
+          ..addAll(properties));
   }
 
+  /// Adds the current user to a group
+  Future<void> setGroup(String groupType, dynamic groupValue) async {
+    return identify(Identify()..set(groupType, groupValue),
+        properties: <String, dynamic>{
+          'groups': <String, dynamic>{groupType: groupValue}
+        });
+  }
+
+  /// Sets properties on a group
   Future<void> groupIdentify(
       String groupType, dynamic groupValue, Identify identify) async {
     return logEvent(name: r'$groupidentify', properties: <String, dynamic>{

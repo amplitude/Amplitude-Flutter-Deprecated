@@ -80,6 +80,25 @@ void main() {
         }));
   });
 
+  test('setGroup', () async {
+    amplitude
+      ..setGroup('orgId', 15)
+      ..flushEvents();
+
+    expect(
+        client.postCalls.single.single,
+        ContainsSubMap(<String, dynamic>{
+          'event_type': r'$identify',
+          'session_id': '123',
+          'user_properties': {
+            r'$set': {'orgId': 15}
+          },
+          'groups': {'orgId': 15},
+          'platform': 'iOS',
+          'timestamp': isInstanceOf<int>()
+        }));
+  });
+
   group('with properties', () {
     test('logEvent', () async {
       final Map<String, Map<String, String>> properties =
