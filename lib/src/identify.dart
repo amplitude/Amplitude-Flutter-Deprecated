@@ -2,12 +2,7 @@ import 'package:flutter/foundation.dart';
 
 class Identify {
   Identify() {
-    userProps = <String, dynamic>{};
-
-    payload = <String, dynamic>{
-      'event_type': r'$identify',
-      'user_properties': userProps
-    };
+    payload = <String, dynamic>{};
   }
 
   static const String OP_SET = r'$set';
@@ -17,7 +12,6 @@ class Identify {
   static const String OP_UNSET = r'$unset';
 
   Map<String, dynamic> payload;
-  Map<String, dynamic> userProps;
 
   void set(String key, dynamic value) {
     addOp(OP_SET, key, value);
@@ -47,6 +41,6 @@ class Identify {
   }
 
   Map<String, dynamic> _opMap(String key) {
-    return userProps.putIfAbsent(key, () => <String, dynamic>{});
+    return payload.putIfAbsent(key, () => <String, dynamic>{});
   }
 }
