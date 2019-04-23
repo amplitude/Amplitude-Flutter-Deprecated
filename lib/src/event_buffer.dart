@@ -3,19 +3,20 @@ import 'package:flutter/foundation.dart';
 
 import 'client.dart';
 import 'event.dart';
+import 'service_provider.dart';
 import 'store.dart';
 import 'time_utils.dart';
 
 class EventBuffer {
-  EventBuffer(this.client, this.store, {this.size = 10});
+  EventBuffer(this.provider, {this.size = 10}) {
+    client = provider.client;
+    store = provider.store;
+  }
 
-  @visibleForTesting
-  EventBuffer.private(this.client, this.store, {this.size = 10});
-
-  final Client client;
-  final int size;
-
+  final ServiceProvider provider;
+  Client client;
   Store store;
+  final int size;
 
   /// Returns number of events in buffer
   int get length => store.length;
