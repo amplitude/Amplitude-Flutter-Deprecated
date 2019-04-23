@@ -43,6 +43,14 @@ class AmplitudeFlutter {
         properties: <String, dynamic>{'user_properties': identify.payload});
   }
 
+  Future<void> groupIdentify(
+      String groupType, dynamic groupValue, Identify identify) async {
+    return logEvent(name: r'$groupidentify', properties: <String, dynamic>{
+      'group_properties': identify.payload,
+      'groups': <String, dynamic>{groupType: groupValue}
+    });
+  }
+
   Future<void> flushEvents() => buffer.flush();
 
   void _init() {

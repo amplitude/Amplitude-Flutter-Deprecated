@@ -61,6 +61,25 @@ void main() {
         }));
   });
 
+  test('groupIdentify', () async {
+    amplitude
+      ..groupIdentify('orgId', 15, Identify()..set('num employees', '1000+'))
+      ..flushEvents();
+
+    expect(
+        client.postCalls.single.single,
+        ContainsSubMap(<String, dynamic>{
+          'event_type': r'$groupidentify',
+          'session_id': '123',
+          'group_properties': {
+            r'$set': {'num employees': '1000+'}
+          },
+          'groups': {'orgId': 15},
+          'platform': 'iOS',
+          'timestamp': isInstanceOf<int>()
+        }));
+  });
+
   group('with properties', () {
     test('logEvent', () async {
       final Map<String, Map<String, String>> properties =
