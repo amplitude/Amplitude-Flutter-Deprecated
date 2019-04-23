@@ -1,8 +1,10 @@
 class Event {
-  Event(this.name, {this.sessionId, Map<String, dynamic> props}) {
+  Event(this.name,
+      {this.sessionId, this.timestamp, this.id, Map<String, dynamic> props}) {
     addProps(props);
   }
 
+  int id;
   String sessionId;
   int timestamp;
   String name;
