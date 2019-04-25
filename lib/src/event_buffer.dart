@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 
@@ -13,6 +14,9 @@ class EventBuffer {
     client = provider.client;
     store = provider.store;
     flushInProgress = false;
+
+    Timer.periodic(
+        Duration(seconds: config.flushPeriod), (Timer _t) => flush());
   }
 
   final Config config;
