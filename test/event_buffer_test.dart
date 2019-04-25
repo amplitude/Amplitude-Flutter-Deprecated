@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:amplitude_flutter/src/client.dart';
+import 'package:amplitude_flutter/src/config.dart';
 import 'package:amplitude_flutter/src/event.dart';
 import 'package:amplitude_flutter/src/event_buffer.dart';
 import 'package:amplitude_flutter/src/store.dart';
@@ -24,7 +25,7 @@ void main() {
     setUp(() {
       provider = MockServiceProvider();
       client = provider.client;
-      subject = EventBuffer(provider);
+      subject = EventBuffer(provider, Config());
     });
 
     group('.length', () {
@@ -52,7 +53,7 @@ void main() {
       });
 
       test('flushes the buffer when the buffer size is reached', () async {
-        subject = EventBuffer(provider, size: 2);
+        subject = EventBuffer(provider, Config(bufferSize: 2));
 
         await subject.add(Event('flush test'));
         expect(client.postCallCount, equals(0));
@@ -111,7 +112,7 @@ void main() {
         mockClient = MockitoClient();
         mockStore = MockitoStore();
         provider = MockServiceProvider(client: mockClient, store: mockStore);
-        subject = EventBuffer(provider);
+        subject = EventBuffer(provider, Config());
 
         final events = [Event('flush 1', id: 1), Event('flush 2', id: 2)];
 

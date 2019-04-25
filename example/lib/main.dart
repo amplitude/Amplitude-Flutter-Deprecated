@@ -17,7 +17,8 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    analytics = AmplitudeFlutter('API_KEY'); // DO NOT CHECK IN
+    analytics =
+        AmplitudeFlutter('API_KEY', Config(bufferSize: 8)); // DO NOT CHECK IN
   }
 
   Future<void> _sendEvent() async {
