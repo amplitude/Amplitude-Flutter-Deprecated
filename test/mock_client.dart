@@ -7,8 +7,9 @@ class MockClient implements Client {
   final List<dynamic> postCalls = <dynamic>[];
 
   @override
-  Future<void> post(dynamic eventData) async {
+  Future<bool> post(dynamic eventData) async {
     postCalls.add(eventData);
+    return Future.value(true);
   }
 
   void reset() => postCalls.clear();
