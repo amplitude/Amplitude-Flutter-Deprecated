@@ -1,23 +1,28 @@
+import 'dart:async';
 import 'dart:math';
 import 'package:flutter/foundation.dart';
 
 import 'client.dart';
+import 'config.dart';
 import 'event.dart';
 import 'service_provider.dart';
 import 'store.dart';
 import 'time_utils.dart';
 
 class EventBuffer {
-  EventBuffer(this.provider, {this.size = 10}) {
+  EventBuffer(this.provider, this.config) {
     client = provider.client;
     store = provider.store;
     flushInProgress = false;
+
+    Timer.periodic(
+        Duration(seconds: config.flushPeriod), (Timer _t) => flush());
   }
 
+  final Config config;
   final ServiceProvider provider;
   Client client;
   Store store;
-  final int size;
   bool flushInProgress;
 
   /// Returns number of events in buffer
@@ -28,7 +33,7 @@ class EventBuffer {
     event.timestamp = TimeUtils().currentTime();
     await store.add(event);
 
-    if (length >= size) {
+    if (length >= config.bufferSize) {
       await flush();
     }
   }

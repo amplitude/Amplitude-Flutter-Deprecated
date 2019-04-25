@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'package:flutter/foundation.dart';
 
+import 'config.dart';
 import 'device_info.dart';
 import 'event.dart';
 import 'event_buffer.dart';
@@ -9,17 +10,18 @@ import 'service_provider.dart';
 import 'session.dart';
 
 class AmplitudeFlutter {
-  AmplitudeFlutter(String apiKey, {int timeout = defaultTimeout}) {
-    provider = ServiceProvider(apiKey: apiKey, timeout: timeout);
+  AmplitudeFlutter(String apiKey, [this.config]) {
+    config ??= Config();
+    provider = ServiceProvider(apiKey: apiKey, timeout: config.sessionTimeout);
     _init();
   }
 
   @visibleForTesting
-  AmplitudeFlutter.private(this.provider) {
+  AmplitudeFlutter.private(this.provider, this.config) {
     _init();
   }
 
-  static const int defaultTimeout = 300000;
+  Config config;
   ServiceProvider provider;
   DeviceInfo deviceInfo;
   Session session;
@@ -67,7 +69,7 @@ class AmplitudeFlutter {
   void _init() {
     deviceInfo = provider.deviceInfo;
     session = provider.session;
-    buffer = EventBuffer(provider, size: 8);
+    buffer = EventBuffer(provider, config);
 
     session.start();
   }

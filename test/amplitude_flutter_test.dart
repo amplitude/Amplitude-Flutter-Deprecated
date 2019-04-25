@@ -2,6 +2,7 @@ import 'package:flutter_test/flutter_test.dart';
 import 'package:mockito/mockito.dart';
 
 import 'package:amplitude_flutter/amplitude_flutter.dart';
+import 'package:amplitude_flutter/src/config.dart';
 
 import 'matchers.dart';
 import 'mock_client.dart';
@@ -27,7 +28,7 @@ void main() {
 
     client.reset();
 
-    amplitude = AmplitudeFlutter.private(provider);
+    amplitude = AmplitudeFlutter.private(provider, Config());
   });
 
   test('logEvent', () async {
