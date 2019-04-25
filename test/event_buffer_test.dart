@@ -1,11 +1,18 @@
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
+import 'package:amplitude_flutter/src/client.dart';
 import 'package:amplitude_flutter/src/event.dart';
 import 'package:amplitude_flutter/src/event_buffer.dart';
+import 'package:amplitude_flutter/src/store.dart';
 
 import 'matchers.dart';
 import 'mock_client.dart';
 import 'mock_service_provider.dart';
+
+class MockitoClient extends Mock implements Client {}
+
+class MockitoStore extends Mock implements Store {}
 
 void main() {
   group('EventBuffer', () {
@@ -93,6 +100,41 @@ void main() {
 
         final List<Event> poppedEvents = await subject.fetch(100);
         expect(poppedEvents.length, equals(2));
+      });
+    });
+
+    group('.flush', () {
+      Client mockClient;
+      Store mockStore;
+
+      setUp(() {
+        mockClient = MockitoClient();
+        mockStore = MockitoStore();
+        provider = MockServiceProvider(client: mockClient, store: mockStore);
+        subject = EventBuffer(provider);
+
+        final events = [Event('flush 1', id: 1), Event('flush 2', id: 2)];
+
+        when(mockStore.length).thenReturn(events.length);
+        when(mockStore.fetch(any)).thenAnswer((_) => Future.value(events));
+      });
+
+      test('deletes events on success', () async {
+        when(mockClient.post(any)).thenAnswer((_) => Future.value(true));
+
+        await subject.flush();
+
+        verify(mockClient.post(any)).called(1);
+        verify(mockStore.delete([1, 2])).called(1);
+      });
+
+      test('does not delete events on failure', () async {
+        when(mockClient.post(any)).thenAnswer((_) => Future.value(false));
+
+        await subject.flush();
+
+        verify(mockClient.post(any)).called(1);
+        verifyNever(mockStore.delete(any));
       });
     });
   });

@@ -11,12 +11,14 @@ class EventBuffer {
   EventBuffer(this.provider, {this.size = 10}) {
     client = provider.client;
     store = provider.store;
+    flushInProgress = false;
   }
 
   final ServiceProvider provider;
   Client client;
   Store store;
   final int size;
+  bool flushInProgress;
 
   /// Returns number of events in buffer
   int get length => store.length;
@@ -33,16 +35,21 @@ class EventBuffer {
 
   /// Flushes all events in buffer
   Future<void> flush() async {
-    if (length > 0) {
-      final events = await fetch(length);
-      final List<Map<String, dynamic>> payload =
-          events.map((e) => e.toPayload()).toList();
-      await client.post(payload);
+    if (length < 1 || flushInProgress) {
+      return;
+    }
+
+    flushInProgress = true;
+    final events = await fetch(length);
+    final List<Map<String, dynamic>> payload =
+        events.map((e) => e.toPayload()).toList();
+
+    final success = await client.post(payload);
+    if (success) {
       final eventIds = events.map((e) => e.id).toList();
       await store.delete(eventIds);
-    } else {
-      await Future.value(null);
     }
+    flushInProgress = false;
   }
 
   @visibleForTesting
