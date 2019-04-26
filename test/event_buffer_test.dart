@@ -151,14 +151,24 @@ void main() {
         verify(mockClient.post(any)).called(1);
         verifyNever(mockStore.delete(any));
         expect(subject.numEvents, equals(1));
-        expect(subject.backoff, equals(true));
 
         when(mockClient.post(any)).thenAnswer((_) => Future.value(200));
 
         await subject.flush();
         verify(mockStore.delete(any)).called(1);
         expect(subject.numEvents, equals(null));
-        expect(subject.backoff, equals(false));
+      });
+
+      test('drops an event if it is too large', () async {
+        when(mockClient.post(any)).thenAnswer((_) => Future.value(413));
+        subject.numEvents = 1;
+        final event = Event('massive event', id: 99);
+        when(mockStore.fetch(any)).thenAnswer((_) => Future.value([event]));
+
+        await subject.flush();
+
+        verify(mockStore.delete([99])).called(1);
+        expect(subject.numEvents, equals(null));
       });
     });
   });

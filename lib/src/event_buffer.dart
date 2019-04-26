@@ -14,7 +14,6 @@ class EventBuffer {
     client = provider.client;
     store = provider.store;
     flushInProgress = false;
-    backoff = false;
 
     Timer.periodic(
         Duration(seconds: config.flushPeriod), (Timer _t) => flush());
@@ -26,7 +25,6 @@ class EventBuffer {
   Store store;
 
   bool flushInProgress;
-  bool backoff;
   int numEvents;
 
   /// Returns number of events in buffer
@@ -53,21 +51,15 @@ class EventBuffer {
     final events = await fetch(numEvents);
     final List<Map<String, dynamic>> payload =
         events.map((e) => e.toPayload()).toList();
+    final eventIds = events.map((e) => e.id).toList();
 
     final status = await client.post(payload);
     switch (status) {
       case 200:
-        final eventIds = events.map((e) => e.id).toList();
-        await store.delete(eventIds);
-
-        numEvents = null;
-        if (backoff) {
-          backoff = false;
-        }
+        await _deleteEvents(eventIds);
         break;
       case 413:
-        backoff = true;
-        numEvents = numEvents ~/ 2;
+        await _handlePayloadTooLarge(eventIds);
         break;
       default:
       // error
@@ -81,5 +73,19 @@ class EventBuffer {
 
     final endRange = min(count, store.length);
     return await store.fetch(endRange);
+  }
+
+  Future<void> _handlePayloadTooLarge(List<int> eventIds) async {
+    // drop a single event that is too large
+    if (eventIds.length == 1) {
+      await _deleteEvents(eventIds);
+    } else {
+      numEvents = numEvents ~/ 2;
+    }
+  }
+
+  Future<void> _deleteEvents(List<int> eventIds) async {
+    await store.delete(eventIds);
+    numEvents = null;
   }
 }
