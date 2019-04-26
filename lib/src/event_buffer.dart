@@ -14,6 +14,7 @@ class EventBuffer {
     client = provider.client;
     store = provider.store;
     flushInProgress = false;
+    backoff = false;
 
     Timer.periodic(
         Duration(seconds: config.flushPeriod), (Timer _t) => flush());
@@ -23,7 +24,10 @@ class EventBuffer {
   final ServiceProvider provider;
   Client client;
   Store store;
+
   bool flushInProgress;
+  bool backoff;
+  int numEvents;
 
   /// Returns number of events in buffer
   int get length => store.length;
@@ -45,14 +49,28 @@ class EventBuffer {
     }
 
     flushInProgress = true;
-    final events = await fetch(length);
+    numEvents ??= length;
+    final events = await fetch(numEvents);
     final List<Map<String, dynamic>> payload =
         events.map((e) => e.toPayload()).toList();
 
-    final success = await client.post(payload);
-    if (success) {
-      final eventIds = events.map((e) => e.id).toList();
-      await store.delete(eventIds);
+    final status = await client.post(payload);
+    switch (status) {
+      case 200:
+        final eventIds = events.map((e) => e.id).toList();
+        await store.delete(eventIds);
+
+        numEvents = null;
+        if (backoff) {
+          backoff = false;
+        }
+        break;
+      case 413:
+        backoff = true;
+        numEvents = numEvents ~/ 2;
+        break;
+      default:
+      // error
     }
     flushInProgress = false;
   }
