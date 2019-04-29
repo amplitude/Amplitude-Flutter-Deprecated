@@ -2,12 +2,21 @@ import 'package:flutter_test/flutter_test.dart';
 
 import 'package:amplitude_flutter/src/event.dart';
 
+import 'matchers.dart';
+
 void main() {
   group('Event', () {
     Event subject;
 
     setUp(() {
       subject = Event('Event Unit Test');
+    });
+
+    group('uuid', () {
+      test('generates a uuid', () {
+        final event = Event('test');
+        expect(event.uuid, isNotNull);
+      });
     });
 
     group('default constructor', () {
@@ -58,11 +67,12 @@ void main() {
 
         expect(
             subject.toPayload(),
-            equals(<String, dynamic>{
+            ContainsSubMap(<String, dynamic>{
               'event_type': 'click',
               'session_id': '123',
               'timestamp': 12345,
-              'user_properties': {'cohort': 'test a'}
+              'user_properties': {'cohort': 'test a'},
+              'uuid': isNotNull
             }));
       });
     });
