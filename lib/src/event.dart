@@ -1,4 +1,5 @@
 import 'package:uuid/uuid.dart';
+import 'constants.dart';
 
 class Event {
   Event(this.name,
@@ -25,7 +26,11 @@ class Event {
       'event_type': name,
       'session_id': sessionId,
       'timestamp': timestamp,
-      'uuid': uuid
+      'uuid': uuid,
+      'library': {
+        'name': Constants.packageName,
+        'version': Constants.packageVersion
+      }
     }..addAll(props);
   }
 }

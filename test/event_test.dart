@@ -72,7 +72,8 @@ void main() {
               'session_id': '123',
               'timestamp': 12345,
               'user_properties': {'cohort': 'test a'},
-              'uuid': isNotNull
+              'uuid': isNotNull,
+              'library': isNotNull
             }));
       });
     });
