@@ -1,3 +1,15 @@
+## 0.0.2
+
+* Fixes bug where default session timeout was not set.
+* Persist events to sqlite database.
+* Refactor to use service provider class to simplify dependency injection in test.
+* Add group identify functionality.
+* Retry posting events.
+* Flush event buffer every 30s.
+* Retry posting events when payload is too large.
+* Include uuid for events.
+* Include library version for events.
+
 ## 0.0.1+1
 
 * Fixes serialization bug preventing events from sending.
