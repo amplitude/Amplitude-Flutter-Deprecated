@@ -2,6 +2,8 @@ import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;
 
+import 'time_utils.dart';
+
 class Client {
   factory Client(String apiKey) {
     if (_instance != null) {
@@ -15,13 +17,12 @@ class Client {
 
   static const String apiUrl = 'https://api.amplitude.com/';
   static const String apiVersion = '2';
-  static const int OK = 200;
   static Client _instance;
 
   final String apiKey;
 
-  Future<bool> post(List<Map<String, dynamic>> eventData) async {
-    final String uploadTime = DateTime.now().millisecondsSinceEpoch.toString();
+  Future<int> post(List<Map<String, dynamic>> eventData) async {
+    final String uploadTime = TimeUtils().currentTime().toString();
     final String events = json.encode(eventData);
     final String checksum = apiVersion + apiKey + events + uploadTime;
     final String md5 = crypto.md5.convert(utf8.encode(checksum)).toString();
@@ -34,9 +35,9 @@ class Client {
         'upload_time': uploadTime,
         'checksum': md5
       });
-      return response.statusCode == OK;
+      return response.statusCode;
     } catch (e) {
-      return false;
+      return 500;
     }
   }
 }

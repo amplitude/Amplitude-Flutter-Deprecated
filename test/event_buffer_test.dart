@@ -114,28 +114,61 @@ void main() {
         provider = MockServiceProvider(client: mockClient, store: mockStore);
         subject = EventBuffer(provider, Config());
 
-        final events = [Event('flush 1', id: 1), Event('flush 2', id: 2)];
+        final events = [
+          Event('flush 1', id: 1),
+          Event('flush 2', id: 2),
+          Event('flush 3', id: 3)
+        ];
 
         when(mockStore.length).thenReturn(events.length);
         when(mockStore.fetch(any)).thenAnswer((_) => Future.value(events));
       });
 
       test('deletes events on success', () async {
-        when(mockClient.post(any)).thenAnswer((_) => Future.value(true));
+        when(mockClient.post(any)).thenAnswer((_) => Future.value(200));
 
         await subject.flush();
 
         verify(mockClient.post(any)).called(1);
-        verify(mockStore.delete([1, 2])).called(1);
+        verify(mockStore.delete([1, 2, 3])).called(1);
       });
 
       test('does not delete events on failure', () async {
-        when(mockClient.post(any)).thenAnswer((_) => Future.value(false));
+        when(mockClient.post(any)).thenAnswer((_) => Future.value(400));
 
         await subject.flush();
 
         verify(mockClient.post(any)).called(1);
         verifyNever(mockStore.delete(any));
+      });
+
+      test('reduces num events when payload too large', () async {
+        when(mockClient.post(any)).thenAnswer((_) => Future.value(413));
+        expect(subject.numEvents, equals(null));
+
+        await subject.flush();
+
+        verify(mockClient.post(any)).called(1);
+        verifyNever(mockStore.delete(any));
+        expect(subject.numEvents, equals(1));
+
+        when(mockClient.post(any)).thenAnswer((_) => Future.value(200));
+
+        await subject.flush();
+        verify(mockStore.delete(any)).called(1);
+        expect(subject.numEvents, equals(null));
+      });
+
+      test('drops an event if it is too large', () async {
+        when(mockClient.post(any)).thenAnswer((_) => Future.value(413));
+        subject.numEvents = 1;
+        final event = Event('massive event', id: 99);
+        when(mockStore.fetch(any)).thenAnswer((_) => Future.value([event]));
+
+        await subject.flush();
+
+        verify(mockStore.delete([99])).called(1);
+        expect(subject.numEvents, equals(null));
       });
     });
   });
