@@ -12,7 +12,10 @@ class Session with WidgetsBindingObserver {
 
   Session._internal(this.timeout) {
     _time = TimeUtils();
-    WidgetsBinding.instance.addObserver(this);
+    final widgetsBinding = WidgetsBinding.instance;
+    if (widgetsBinding != null) {
+      widgetsBinding.addObserver(this);
+    }
   }
 
   @visibleForTesting

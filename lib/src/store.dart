@@ -25,6 +25,9 @@ class Store {
 
   Future<int> add(Event event) async {
     final db = await _getDb();
+    if (db == null) {
+      return 0;
+    }
     final result = await db.insert(EVENTS_TABLE, _serialize(event));
     length++;
     return result;
@@ -32,6 +35,9 @@ class Store {
 
   Future<void> empty() async {
     final db = await _getDb();
+    if (db == null) {
+      return;
+    }
     await db.rawDelete('DELETE FROM $EVENTS_TABLE; VACUUM;');
     length = 0;
   }
@@ -43,6 +49,9 @@ class Store {
 
   Future<void> delete(List<int> eventIds) async {
     final db = await _getDb();
+    if (db == null) {
+      return;
+    }
     final count = await db.rawDelete(
         'DELETE FROM $EVENTS_TABLE WHERE id IN (${eventIds.join(',')})');
     length -= count;
@@ -50,6 +59,9 @@ class Store {
 
   Future<List<Event>> fetch(int count) async {
     final db = await _getDb();
+    if (db == null) {
+      return [];
+    }
     final records = await db.query(EVENTS_TABLE, limit: count, orderBy: COL_ID);
     return records.map((m) => _deserialize(m)).toList();
   }
@@ -69,25 +81,32 @@ class Store {
   }
 
   Future<Database> _openDb() async {
-    final String dir = await getDatabasesPath();
-    final String dbPath = path.join(dir, dbFile);
+    try {
+      final String dir = await getDatabasesPath();
+      final String dbPath = path.join(dir, dbFile);
 
-    final createDb = (Database db, int version) async {
-      await db.execute('''
-        create table $EVENTS_TABLE (
-          $COL_ID integer primary key autoincrement,
-          $COL_EVENT_TYPE text not null,
-          $COL_SESSION_ID text,
-          $COL_TIMESTAMP integer,
-          $COL_PROPS text
-        )
-      ''');
-    };
+      final createDb = (Database db, int version) async {
+        await db.execute('''
+          create table $EVENTS_TABLE (
+            $COL_ID integer primary key autoincrement,
+            $COL_EVENT_TYPE text not null,
+            $COL_SESSION_ID text,
+            $COL_TIMESTAMP integer,
+            $COL_PROPS text
+          )
+        ''');
+      };
 
-    return await openDatabase(dbPath, version: 1, onCreate: createDb);
+      return await openDatabase(dbPath, version: 1, onCreate: createDb);
+    } catch (e) {
+      return Future.value(null);
+    }
   }
 
   Future<int> _count(Database db) async {
+    if (db == null) {
+      return 0;
+    }
     final List<Map<String, dynamic>> rows =
         await db.rawQuery('SELECT COUNT(*) as count FROM $EVENTS_TABLE');
     final int count = rows.single['count'];
