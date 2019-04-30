@@ -22,8 +22,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    analytics =
-        AmplitudeFlutter(apiKey, Config(bufferSize: 8));
+    analytics = AmplitudeFlutter(apiKey, Config(bufferSize: 8));
   }
 
   Future<void> _sendEvent() async {
@@ -44,6 +43,19 @@ class _MyAppState extends State<MyApp> {
 
     setState(() {
       _message = 'Identify Sent.';
+    });
+  }
+
+  Future<void> _sendRevenue() async {
+    final Revenue revenue = Revenue()
+      ..setProductId('specialProduct')
+      ..setPrice(41.23)
+      ..setQuantity(2);
+
+    await analytics.logRevenue(revenue);
+
+    setState(() {
+      _message = 'Revenue Sent.';
     });
   }
 
@@ -73,6 +85,10 @@ class _MyAppState extends State<MyApp> {
               RaisedButton(
                 child: const Text('Identify Event'),
                 onPressed: _sendIdentify,
+              ),
+              RaisedButton(
+                child: const Text('Revenue Event'),
+                onPressed: _sendRevenue,
               ),
               RaisedButton(
                 child: const Text('Flush Events'),
