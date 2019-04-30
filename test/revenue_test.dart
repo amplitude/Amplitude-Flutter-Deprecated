@@ -10,8 +10,8 @@ void main() {
     });
 
     group('default constructor', () {
-      test('sets a blank revenue payload', () {
-        expect(subject.payload, equals(<String, dynamic>{}));
+      test('sets a default revenue payload', () {
+        expect(subject.payload, equals(<String, dynamic>{r'$quantity': 1}));
       });
     });
 

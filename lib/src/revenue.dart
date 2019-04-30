@@ -1,6 +1,6 @@
 class Revenue {
   Revenue() {
-    payload = <String, dynamic>{};
+    payload = <String, dynamic>{QUANTITY: 1};
   }
 
   Map<String, dynamic> payload;
