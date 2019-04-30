@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:flutter/services.dart';
 import 'package:device_info/device_info.dart';
 
 class DeviceInfo {
@@ -26,8 +25,8 @@ class DeviceInfo {
       } else if (Platform.isIOS) {
         deviceData = _parseIosInfo(await deviceInfoPlugin.iosInfo);
       }
-    } on PlatformException {
-      // log error
+    } catch (e) {
+      // error
     }
     _deviceData = deviceData;
     return deviceData;
