@@ -1,3 +1,8 @@
+## 0.1.0
+
+* Adds revenue tracking.
+* Catch errors from platform channels.
+
 ## 0.0.2
 
 * Fixes bug where default session timeout was not set.
