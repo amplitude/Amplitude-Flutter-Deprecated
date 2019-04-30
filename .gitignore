@@ -4,5 +4,8 @@
 
 .packages
 .pub/
+.idea/
 
 build/
+
+main_dev.dart
