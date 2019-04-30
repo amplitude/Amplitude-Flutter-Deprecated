@@ -17,10 +17,10 @@ Future<void> example() async {
   final AmplitudeFlutter analytics =  AmplitudeFlutter('API KEY');
 
   // log an event
-  await analytics.logEvent(name: 'Dart Click');
+  analytics.logEvent(name: 'Dart Click');
 
   // Log events with properties
-  await analytics.logEvent(name: 'Dart Click', properties: { 'key': 'value' });
+  analytics.logEvent(name: 'Dart Click', properties: { 'key': 'value' });
 
   // identify a user
   final Identify identify = Identify()
@@ -30,7 +30,7 @@ Future<void> example() async {
     ..append('tags', 'new tag')
     ..unset('demo_user');
 
-  await analytics.identify(identify);
+  analytics.identify(identify);
 
   // Amplitude Accounts [https://amplitude.zendesk.com/hc/en-us/articles/115001765532-Accounts] methods:
   // add a user to a group
@@ -41,6 +41,14 @@ Future<void> example() async {
 
   // emit an event associated with a group
   analytics.logEvent('Demo Released', properties: { 'groups': { 'orgId': 15 } });
+
+  // Log revenue
+  final Revenue revenue = Revenue()
+    ..setPrice(23.23)
+    ..setQuantity(3)
+    ..setProductId('widget1')
+
+  analytics.logRevenue(revenue);
 }
 ```
 

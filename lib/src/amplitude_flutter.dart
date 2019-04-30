@@ -6,6 +6,7 @@ import 'device_info.dart';
 import 'event.dart';
 import 'event_buffer.dart';
 import 'identify.dart';
+import 'revenue.dart';
 import 'service_provider.dart';
 import 'session.dart';
 
@@ -62,6 +63,14 @@ class AmplitudeFlutter {
       'group_properties': identify.payload,
       'groups': <String, dynamic>{groupType: groupValue}
     });
+  }
+
+  Future<void> logRevenue(Revenue revenue) async {
+    if (revenue.isValid()) {
+      return logEvent(
+          name: Revenue.EVENT,
+          properties: <String, dynamic>{'event_properties': revenue.payload});
+    }
   }
 
   Future<void> flushEvents() => buffer.flush();

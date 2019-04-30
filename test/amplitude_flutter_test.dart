@@ -122,4 +122,19 @@ void main() {
           }));
     });
   });
+
+  test('revenue', () async {
+    final revenue = Revenue()
+      ..setPrice(43.43)
+      ..setQuantity(3);
+    await amplitude.logRevenue(revenue);
+    await amplitude.flushEvents();
+
+    expect(
+        client.postCalls.single.single,
+        ContainsSubMap(<String, dynamic>{
+          'event_type': 'revenue_amount',
+          'event_properties': {r'$price': 43.43, r'$quantity': 3}
+        }));
+  });
 }
