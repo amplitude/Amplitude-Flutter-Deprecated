@@ -3,6 +3,8 @@ import 'dart:async';
 import 'package:amplitude_flutter/amplitude_flutter.dart';
 import 'package:flutter/material.dart';
 
+import 'user_id_form.dart';
+
 class MyApp extends StatefulWidget {
   const MyApp(this.apiKey);
 
@@ -23,6 +25,10 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     analytics = AmplitudeFlutter(apiKey, Config(bufferSize: 8));
+  }
+
+  void _onUserIdChange(String userId) {
+    analytics.setUserId(userId.isEmpty ? null : userId);
   }
 
   Future<void> _sendEvent() async {
@@ -96,10 +102,11 @@ class _MyAppState extends State<MyApp> {
         appBar: AppBar(
           title: const Text('Amplitude Flutter'),
         ),
-        body: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        body: Padding(
+          padding: const EdgeInsets.all(10.0),
+          child: ListView(
             children: <Widget>[
+              UserIdForm(_onUserIdChange),
               RaisedButton(
                 child: const Text('Send Event'),
                 onPressed: _sendEvent,

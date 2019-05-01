@@ -1,4 +1,5 @@
 import 'package:uuid/uuid.dart';
+
 import 'constants.dart';
 
 class Event {
@@ -19,6 +20,10 @@ class Event {
     if (props != null) {
       this.props.addAll(props);
     }
+  }
+
+  void addProp(String key, dynamic value) {
+    props[key] = value;
   }
 
   Map<String, dynamic> toPayload() {

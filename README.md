@@ -16,6 +16,9 @@ import 'package:amplitude_flutter/amplitude_flutter.dart';
 Future<void> example() async {
   final AmplitudeFlutter analytics =  AmplitudeFlutter('API KEY');
 
+  // set this user's id
+  analytics.setUserId('abc123');
+
   // log an event
   analytics.logEvent(name: 'Dart Click');
 

@@ -28,6 +28,12 @@ class AmplitudeFlutter {
   DeviceInfo deviceInfo;
   Session session;
   EventBuffer buffer;
+  dynamic userId;
+
+  /// Set the user id associated with events
+  void setUserId(dynamic userId) {
+    this.userId = userId;
+  }
 
   /// Log an event
   Future<void> logEvent(
@@ -38,6 +44,10 @@ class AmplitudeFlutter {
     final Event event =
         Event(name, sessionId: session.getSessionId(), props: properties)
           ..addProps(deviceInfo.get());
+
+    if (userId != null) {
+      event.addProp('user_id', userId);
+    }
 
     return buffer.add(event);
   }
