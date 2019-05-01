@@ -1,4 +1,5 @@
 import 'dart:async';
+
 import 'package:flutter/foundation.dart';
 
 import 'config.dart';
@@ -28,6 +29,7 @@ class AmplitudeFlutter {
   Session session;
   EventBuffer buffer;
 
+  /// Log an event
   Future<void> logEvent(
       {@required String name,
       Map<String, dynamic> properties = const <String, String>{}}) async {
@@ -40,6 +42,7 @@ class AmplitudeFlutter {
     return buffer.add(event);
   }
 
+  /// Identify the current user
   Future<void> identify(Identify identify,
       {Map<String, dynamic> properties = const <String, dynamic>{}}) async {
     return logEvent(
@@ -65,6 +68,7 @@ class AmplitudeFlutter {
     });
   }
 
+  /// Log a revenue event
   Future<void> logRevenue(Revenue revenue) async {
     if (revenue.isValid()) {
       return logEvent(
@@ -73,6 +77,7 @@ class AmplitudeFlutter {
     }
   }
 
+  /// Manually flush events in the buffer
   Future<void> flushEvents() => buffer.flush();
 
   void _init() {

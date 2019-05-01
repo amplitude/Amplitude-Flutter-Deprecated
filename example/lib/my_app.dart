@@ -46,6 +46,28 @@ class _MyAppState extends State<MyApp> {
     });
   }
 
+  Future<void> _sendGroupIdentify() async {
+    final Identify identify = Identify()
+      ..set('group_identify_test',
+          'group identify sent at ${DateTime.now().millisecondsSinceEpoch}');
+    await analytics.groupIdentify('account', 'acme', identify);
+
+    setState(() {
+      _message = 'Group Identify Sent';
+    });
+  }
+
+  Future<void> _setGroup() async {
+    const groupType = 'account';
+    const groupValue = 'acme';
+
+    await analytics.setGroup(groupType, groupValue);
+
+    setState(() {
+      _message = 'Group set to $groupType / $groupValue';
+    });
+  }
+
   Future<void> _sendRevenue() async {
     final Revenue revenue = Revenue()
       ..setProductId('specialProduct')
@@ -85,6 +107,14 @@ class _MyAppState extends State<MyApp> {
               RaisedButton(
                 child: const Text('Identify Event'),
                 onPressed: _sendIdentify,
+              ),
+              RaisedButton(
+                child: const Text('Set group'),
+                onPressed: _setGroup,
+              ),
+              RaisedButton(
+                child: const Text('Group Identify Event'),
+                onPressed: _sendGroupIdentify,
               ),
               RaisedButton(
                 child: const Text('Revenue Event'),
