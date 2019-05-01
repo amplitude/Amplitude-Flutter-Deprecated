@@ -82,16 +82,18 @@ void main() {
 
     group('.toPayload', () {
       test('properly formats an API payload', () {
-        subject = Event('click', sessionId: '123', props: <String, dynamic>{
+        subject =
+            Event('click', sessionId: '123', id: 99, props: <String, dynamic>{
           'user_properties': {'cohort': 'test a'}
         })
-          ..timestamp = 12345;
+              ..timestamp = 12345;
 
         expect(
             subject.toPayload(),
             ContainsSubMap(<String, dynamic>{
               'event_type': 'click',
               'session_id': '123',
+              'sequence_number': 99,
               'timestamp': 12345,
               'user_properties': {'cohort': 'test a'},
               'uuid': isNotNull,

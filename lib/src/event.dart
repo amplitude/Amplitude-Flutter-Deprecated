@@ -30,6 +30,7 @@ class Event {
     return <String, dynamic>{
       'event_type': name,
       'session_id': sessionId,
+      'sequence_number': id,
       'timestamp': timestamp,
       'uuid': uuid,
       'library': {
