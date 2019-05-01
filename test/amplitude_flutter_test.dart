@@ -1,8 +1,7 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-
 import 'package:amplitude_flutter/amplitude_flutter.dart';
 import 'package:amplitude_flutter/src/config.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 import 'matchers.dart';
 import 'mock_client.dart';
@@ -57,6 +56,22 @@ void main() {
           'user_properties': {
             r'$set': {'cohort': 'test a'}
           },
+          'platform': 'iOS',
+          'timestamp': isInstanceOf<int>()
+        }));
+  });
+
+  test('setUser', () async {
+    amplitude.setUserId('user-123');
+    await amplitude.logEvent(name: 'test');
+    await amplitude.flushEvents();
+
+    expect(
+        client.postCalls.single.single,
+        ContainsSubMap(<String, dynamic>{
+          'event_type': 'test',
+          'session_id': '123',
+          'user_id': 'user-123',
           'platform': 'iOS',
           'timestamp': isInstanceOf<int>()
         }));
