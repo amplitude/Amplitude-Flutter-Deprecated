@@ -1,23 +1,27 @@
 import 'package:flutter/material.dart';
+import 'app_state.dart';
 
 class UserIdForm extends StatefulWidget {
-  const UserIdForm(this.onChanged);
-
-  final ValueChanged<String> onChanged;
-
   @override
   _UserIdFormState createState() => _UserIdFormState();
 }
 
 class _UserIdFormState extends State<UserIdForm> {
+  Function makeHandler(BuildContext context) {
+    return (String userId) {
+      AppState.of(context).analytics..setUserId(userId.isEmpty ? null : userId);
+    };
+  }
+
   @override
   Widget build(BuildContext context) {
     return TextField(
+        autocorrect: false,
         decoration: InputDecoration(
             filled: true,
             contentPadding:
                 const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
             labelText: 'User Id'),
-        onChanged: widget.onChanged);
+        onChanged: makeHandler(context));
   }
 }
