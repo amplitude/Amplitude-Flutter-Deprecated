@@ -152,4 +152,14 @@ void main() {
           'event_properties': {r'$price': 43.43, r'$quantity': 3}
         }));
   });
+
+  group('when the user opts out of events', () {
+    test('does not log events', () async {
+      amplitude = AmplitudeFlutter.private(provider, Config(optOut: true));
+      await amplitude.logEvent(name: 'test');
+      await amplitude.flushEvents();
+
+      expect(client.postCalls, isEmpty);
+    });
+  });
 }

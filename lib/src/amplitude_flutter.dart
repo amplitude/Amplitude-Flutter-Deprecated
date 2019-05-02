@@ -41,6 +41,10 @@ class AmplitudeFlutter {
       Map<String, dynamic> properties = const <String, String>{}}) async {
     session.refresh();
 
+    if (config.optOut) {
+      return Future.value(null);
+    }
+
     final Event event =
         Event(name, sessionId: session.getSessionId(), props: properties)
           ..addProps(deviceInfo.get());
