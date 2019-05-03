@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_state.dart';
 
 class UserIdForm extends StatefulWidget {
@@ -17,11 +18,7 @@ class _UserIdFormState extends State<UserIdForm> {
   Widget build(BuildContext context) {
     return TextField(
         autocorrect: false,
-        decoration: InputDecoration(
-            filled: true,
-            contentPadding:
-                const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-            labelText: 'User Id'),
+        decoration: InputDecoration(labelText: 'User Id'),
         onChanged: makeHandler(context));
   }
 }

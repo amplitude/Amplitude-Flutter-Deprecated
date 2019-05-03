@@ -32,18 +32,15 @@ class _RevenueFormState extends State<RevenueForm> {
 
   @override
   Widget build(BuildContext context) {
-    final InputDecoration dec = InputDecoration(
-      filled: true,
-      contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8),
-    );
+    final InputDecoration dec = InputDecoration()
+      ..applyDefaults(Theme.of(context).inputDecorationTheme);
+
     const Widget vertSpace = SizedBox(height: 10);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text('Revenue',
-            textScaleFactor: 1.2,
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('Revenue', style: Theme.of(context).textTheme.headline),
         const SizedBox(height: 10),
         TextField(
             decoration: dec.copyWith(labelText: 'Product Id'),

@@ -29,9 +29,7 @@ class _GroupFormState extends State<GroupForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text('Group / Account',
-            textScaleFactor: 1.2,
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('Group / Account', style: Theme.of(context).textTheme.headline),
         const SizedBox(height: 10),
         Row(children: <Widget>[
           Expanded(

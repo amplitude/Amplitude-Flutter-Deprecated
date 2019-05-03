@@ -33,23 +33,22 @@ class _GroupIdentifyFormState extends State<GroupIdentifyForm> {
 
   @override
   Widget build(BuildContext context) {
-    final InputDecoration dec = InputDecoration(
-        filled: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8));
+    final InputDecoration dec = InputDecoration()
+      ..applyDefaults(Theme.of(context).inputDecorationTheme);
+
+    const sizedBox = SizedBox(width: 10);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text('Group Identify',
-            textScaleFactor: 1.2,
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('Group Identify', style: Theme.of(context).textTheme.headline),
         const SizedBox(height: 10),
         Row(children: <Widget>[
           Expanded(
               child: TextField(
                   controller: groupType,
                   decoration: dec.copyWith(labelText: 'Group Type'))),
-          const SizedBox(width: 10),
+          sizedBox,
           Expanded(
               child: TextField(
                   controller: groupValue,
@@ -62,7 +61,7 @@ class _GroupIdentifyFormState extends State<GroupIdentifyForm> {
             controller: groupPropertyKey,
             decoration: dec.copyWith(labelText: 'User Property Key'),
           )),
-          const SizedBox(width: 10),
+          sizedBox,
           Expanded(
               child: TextField(
             controller: groupPropertyValue,

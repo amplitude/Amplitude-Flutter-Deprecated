@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+
 import 'app_state.dart';
 
 class EventForm extends StatefulWidget {
@@ -21,9 +22,7 @@ class _EventFormState extends State<EventForm> {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text(r'Event',
-            textScaleFactor: 1.2,
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('Event', style: Theme.of(context).textTheme.headline),
         const SizedBox(height: 10),
         TextField(
             decoration: InputDecoration(

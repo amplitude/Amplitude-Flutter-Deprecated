@@ -50,6 +50,9 @@ class _MyAppState extends State<MyApp> {
       analytics: analytics,
       setMessage: setMessage,
       child: MaterialApp(
+        theme: ThemeData(
+            inputDecorationTheme: InputDecorationTheme(
+                contentPadding: const EdgeInsets.all(8), filled: true)),
         home: Scaffold(
           appBar: AppBar(
             title: const Text('Amplitude Flutter'),
@@ -76,10 +79,7 @@ class _MyAppState extends State<MyApp> {
                   child: const Text('Flush Events'),
                   onPressed: _flushEvents,
                 ),
-                Text(
-                  _message,
-                  style: const TextStyle(color: Colors.black, fontSize: 22),
-                )
+                Text(_message, style: Theme.of(context).textTheme.body1)
               ],
             ),
           ),

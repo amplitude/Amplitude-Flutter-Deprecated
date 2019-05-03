@@ -1,5 +1,6 @@
-import 'package:flutter/material.dart';
 import 'package:amplitude_flutter/amplitude_flutter.dart';
+import 'package:flutter/material.dart';
+
 import 'app_state.dart';
 
 class IdentifyForm extends StatefulWidget {
@@ -28,16 +29,13 @@ class _IdentifyFormState extends State<IdentifyForm> {
 
   @override
   Widget build(BuildContext context) {
-    final InputDecoration dec = InputDecoration(
-        filled: true,
-        contentPadding: const EdgeInsets.symmetric(horizontal: 8, vertical: 8));
+    final InputDecoration dec = InputDecoration()
+      ..applyDefaults(Theme.of(context).inputDecorationTheme);
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: <Widget>[
-        const Text('Identify',
-            textScaleFactor: 1.2,
-            style: TextStyle(fontWeight: FontWeight.bold)),
+        Text('Identify', style: Theme.of(context).textTheme.headline),
         const SizedBox(height: 10),
         Row(children: <Widget>[
           Expanded(
