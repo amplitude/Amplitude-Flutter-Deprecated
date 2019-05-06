@@ -1,3 +1,10 @@
+## 0.2.0
+
+* Add setUserId()
+* Add a sequence_id sent with events
+* Config option to opt out of tracking
+* Example app changes
+
 ## 0.1.0
 
 * Adds revenue tracking.
