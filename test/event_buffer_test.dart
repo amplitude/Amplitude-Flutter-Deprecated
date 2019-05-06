@@ -1,11 +1,10 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-
 import 'package:amplitude_flutter/src/client.dart';
 import 'package:amplitude_flutter/src/config.dart';
 import 'package:amplitude_flutter/src/event.dart';
 import 'package:amplitude_flutter/src/event_buffer.dart';
 import 'package:amplitude_flutter/src/store.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 import 'matchers.dart';
 import 'mock_client.dart';
@@ -69,6 +68,20 @@ void main() {
               'timestamp': isInstanceOf<int>()
             }));
         expect(client.postCalls.single, isList);
+      });
+
+      test('limits number of events added to the store', () async {
+        // Have the client return an unhandled status code so the store doesn't get cleared
+        provider.client = MockClient(httpStatus: 218);
+        subject =
+            EventBuffer(provider, Config(bufferSize: 1, maxStoredEvents: 2));
+
+        await subject.add(Event('test 1'));
+        await subject.add(Event('test 2'));
+        expect(subject.length, equals(2));
+
+        await subject.add(Event('test 3'));
+        expect(subject.length, equals(2));
       });
     });
 
