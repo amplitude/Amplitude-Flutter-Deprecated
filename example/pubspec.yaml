@@ -1,6 +1,7 @@
 name: amplitude_flutter_example
 description: Demonstrates how to use the amplitude_flutter plugin.
 publish_to: 'none'
+version: 0.12.3
 
 environment:
   sdk: ">=2.1.0 <3.0.0"
