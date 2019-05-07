@@ -1,5 +1,7 @@
 import 'dart:io';
+
 import 'package:device_info/device_info.dart';
+import 'package:package_info/package_info.dart';
 
 class DeviceInfo {
   DeviceInfo() {
@@ -25,6 +27,7 @@ class DeviceInfo {
       } else if (Platform.isIOS) {
         deviceData = _parseIosInfo(await deviceInfoPlugin.iosInfo);
       }
+      deviceData.addAll(await _getApplicationInfo());
     } catch (e) {
       // error
     }
@@ -53,5 +56,11 @@ class DeviceInfo {
       'idfv': data.identifierForVendor,
       'platform': 'iOS'
     };
+  }
+
+  Future<Map<String, String>> _getApplicationInfo() async {
+    final PackageInfo info = await PackageInfo.fromPlatform();
+
+    return <String, String>{'version_name': info.version};
   }
 }
