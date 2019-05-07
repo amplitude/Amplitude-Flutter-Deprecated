@@ -28,9 +28,9 @@ class Event {
 
   Map<String, dynamic> toPayload() {
     return <String, dynamic>{
+      'event_id': id,
       'event_type': name,
       'session_id': sessionId,
-      'sequence_number': id,
       'timestamp': timestamp,
       'uuid': uuid,
       'library': {
