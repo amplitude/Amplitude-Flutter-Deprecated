@@ -1,5 +1,6 @@
 import 'dart:async';
 import 'dart:math';
+
 import 'package:flutter/foundation.dart';
 
 import 'client.dart';
@@ -32,6 +33,11 @@ class EventBuffer {
 
   /// Adds a raw event hash to the buffer
   Future<void> add(Event event) async {
+    if (length >= config.maxStoredEvents) {
+      print('Max stored events reached.  Discarding event.');
+      return;
+    }
+
     event.timestamp = TimeUtils().currentTime();
     await store.add(event);
 
