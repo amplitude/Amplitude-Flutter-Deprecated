@@ -1,3 +1,8 @@
+## 1.0.0
+* Send event_id with payloads
+* Add application version to events
+* Limit stored events
+
 ## 0.2.0
 
 * Add setUserId()
