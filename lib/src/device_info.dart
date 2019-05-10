@@ -4,16 +4,8 @@ import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
 
 class DeviceInfo {
-  DeviceInfo() {
-    getPlatformInfo();
-  }
-
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, String> _deviceData = <String, String>{};
-
-  Map<String, String> get() {
-    return _deviceData;
-  }
 
   Future<Map<String, String>> getPlatformInfo() async {
     if (_deviceData.isNotEmpty) {

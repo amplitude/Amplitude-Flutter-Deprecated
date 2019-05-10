@@ -28,6 +28,7 @@ class _MyAppState extends State<MyApp> {
   void initState() {
     super.initState();
     analytics = AmplitudeFlutter(widget.apiKey, Config(bufferSize: 8));
+    analytics.logEvent(name: 'MyApp startup');
   }
 
   Future<void> _flushEvents() async {
