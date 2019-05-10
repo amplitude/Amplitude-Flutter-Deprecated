@@ -21,8 +21,8 @@ void main() {
     deviceInfo = provider.deviceInfo;
     session = provider.session;
 
-    when(deviceInfo.get())
-        .thenAnswer((_) => <String, String>{'platform': 'iOS'});
+    when(deviceInfo.getPlatformInfo()).thenAnswer(
+        (_) => Future<Map<String, String>>.value({'platform': 'iOS'}));
     when(session.getSessionId()).thenAnswer((_) => '123');
 
     client.reset();

@@ -47,7 +47,7 @@ class AmplitudeFlutter {
 
     final Event event =
         Event(name, sessionId: session.getSessionId(), props: properties)
-          ..addProps(deviceInfo.get());
+          ..addProps(await deviceInfo.getPlatformInfo());
 
     if (userId != null) {
       event.addProp('user_id', userId);
