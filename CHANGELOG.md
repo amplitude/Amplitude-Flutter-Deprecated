@@ -1,4 +1,9 @@
+## 1.0.1
+
+* Wait for device info to be available before sending events
+
 ## 1.0.0
+
 * Send event_id with payloads
 * Add application version to events
 * Limit stored events
