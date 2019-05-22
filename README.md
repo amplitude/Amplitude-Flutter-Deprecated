@@ -1,6 +1,6 @@
 # amplitude_flutter
 
-The Official Amplitude Flutter plugin.  Used to track events with [Amplitude](https://www.amplitude.com).
+The Official Amplitude Flutter plugin. Used to track events with [Amplitude](https://www.amplitude.com).
 
 ## Getting Started
 
@@ -20,7 +20,7 @@ NOTE: This plugin's methods should only be called from the main isolate.
 import 'package:amplitude_flutter/amplitude_flutter.dart';
 
 Future<void> example() async {
-  final AmplitudeFlutter analytics =  AmplitudeFlutter('API KEY');
+  final AmplitudeFlutter analytics = AmplitudeFlutter('API KEY');
 
   // set this user's id
   analytics.setUserId('abc123');
@@ -28,8 +28,8 @@ Future<void> example() async {
   // log an event
   analytics.logEvent(name: 'add_friend');
 
-  // Log events with properties
-  analytics.logEvent(name: 'add_friend', properties: { 'key': 'value' });
+  // Log events with event properties
+  analytics.logEvent(name: 'add_friend', properties: { 'event_properties': { 'key': 'value' }});
 
   // identify a user
   final Identify identify = Identify()
