@@ -9,7 +9,6 @@ import 'mock_client.dart';
 import 'mock_store.dart';
 
 class MockDeviceInfo extends Mock implements DeviceInfo {}
-
 class MockSession extends Mock implements Session {}
 
 class MockServiceProvider implements ServiceProvider {

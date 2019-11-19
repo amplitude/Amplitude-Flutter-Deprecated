@@ -1,13 +1,16 @@
 import 'dart:developer' as developer;
 import 'dart:io';
+
 import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
+
 import './sim_info.dart';
 
 class DeviceInfo {
+  DeviceInfo(this.getCarrierInfo);
+  bool getCarrierInfo;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, String> _deviceData = <String, String>{};
-
   Future<Map<String, String>> getPlatformInfo() async {
     if (_deviceData.isNotEmpty) {
       return _deviceData;
@@ -22,15 +25,13 @@ class DeviceInfo {
         deviceData.addAll(await _getDeviceModel());
       }
       deviceData.addAll(await _getApplicationInfo());
-      deviceData.addAll(await _getCarrierName());
-
+      if (getCarrierInfo == true) {
+        deviceData.addAll(await _getCarrierName());
+      }
     } catch (e) {
       // error
     }
     _deviceData = deviceData;
-    developer.log('all deviceData", $deviceData');
-    print("all device data");
-    print(deviceData);
     return deviceData;
   }
 
@@ -39,14 +40,14 @@ class DeviceInfo {
     return <String, String>{'carrier': name};
   }
 
-  // get IOS phone model
+  // get iOS phone model
   Future<Map<String, String>> _getDeviceModel() async {
     final String name = await SimInfo.getDeviceModel;
-    return <String, String>{'devce_model': name};
+    return <String, String>{'device_model': name};
   }
 
   Map<String, String> _parseAndroidInfo(AndroidDeviceInfo build) {
-     developer.log('buildDataAndroid", $build');
+    developer.log('buildDataAndroid", $build');
     return <String, String>{
       'os_name': 'Android ${build.version.release}',
       'device_brand': build.brand,

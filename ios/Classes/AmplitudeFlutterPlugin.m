@@ -27,9 +27,7 @@
 - (NSString*)carrierName {
   CTTelephonyNetworkInfo *netinfo = [[CTTelephonyNetworkInfo alloc] init];
   CTCarrier *carrier = [netinfo subscriberCellularProvider];
-  NSLog(@"Carrier: %@", carrier);
   NSString* name = [carrier carrierName];
-  NSLog(@"Carrier Name: %@", name);
   if (name != nil) {
     return name;
   } else {

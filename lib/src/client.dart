@@ -1,4 +1,3 @@
-import 'dart:developer' as developer;
 import 'dart:convert';
 import 'package:crypto/crypto.dart' as crypto;
 import 'package:http/http.dart' as http;

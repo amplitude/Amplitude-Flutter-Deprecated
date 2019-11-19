@@ -1,5 +1,4 @@
 import 'dart:async';
-import 'dart:io';
 
 import 'package:flutter/services.dart';
 
@@ -8,15 +7,18 @@ class SimInfo {
       const MethodChannel('amplitude_flutter');
 
   static Future<String> get getCarrierName async {
-    final String carrierName  = await _channel.invokeMethod('carrierName');
-    print(carrierName);
-    return carrierName;
+    try {
+      final String carrierName  = await _channel.invokeMethod('carrierName');
+      return carrierName;
+    } on PlatformException catch(e) {
+      print('error retreiving carrier info: ${e.message}');
+      return '';
+    }
   }
 
+// retreives the model type for the device
   static Future<String> get getDeviceModel async {
     final String deviceModel = await _channel.invokeMethod('deviceModel');
-    print("deviceModel");
-    print(deviceModel);
     return deviceModel;
   }
 }
