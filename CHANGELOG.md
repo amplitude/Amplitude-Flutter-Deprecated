@@ -1,5 +1,10 @@
 ## 1.0.1
 
+* Migrate from AppLifecycleState.suspending to AppLifecycleState.detached. Cause suspending is
+deprecated
+
+## 1.0.1
+
 * Wait for device info to be available before sending events
 
 ## 1.0.0
