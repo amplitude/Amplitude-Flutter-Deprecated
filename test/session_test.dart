@@ -1,9 +1,8 @@
-import 'package:flutter_test/flutter_test.dart';
-import 'package:mockito/mockito.dart';
-import 'package:flutter/widgets.dart';
-
 import 'package:amplitude_flutter/src/session.dart';
 import 'package:amplitude_flutter/src/time_utils.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/mockito.dart';
 
 class MockTimeUtils extends Mock implements TimeUtils {}
 

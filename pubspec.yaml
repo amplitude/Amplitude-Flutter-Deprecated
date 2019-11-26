@@ -1,6 +1,6 @@
 name: amplitude_flutter
 description: Official Flutter plugin for tracking events and revenue to Amplitude.
-version: 1.0.1
+version: 1.1.0
 author: Amplitude <platform@amplitude.com>
 homepage: https://github.com/amplitude/Amplitude-Flutter
 
@@ -16,7 +16,6 @@ dependencies:
   crypto: "^2.0.6"
   sqflite: "^1.1.5"
   uuid: "^2.0.1"
-
 dev_dependencies:
   flutter_test:
     sdk: flutter

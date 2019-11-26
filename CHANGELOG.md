@@ -1,3 +1,8 @@
+## 1.1.0
+* add `device_manufacturer` info
+* add ability to retrieve carrier info
+* add config option to turn on and off retrieving carrier info
+
 ## 1.0.1
 
 * Wait for device info to be available before sending events

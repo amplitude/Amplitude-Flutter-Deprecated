@@ -19,7 +19,6 @@ class MyApp extends StatefulWidget {
   @override
   _MyAppState createState() => _MyAppState();
 }
-
 class _MyAppState extends State<MyApp> {
   String _message = '';
   AmplitudeFlutter analytics;
@@ -27,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    analytics = AmplitudeFlutter(widget.apiKey, Config(bufferSize: 8));
+    analytics = AmplitudeFlutter(widget.apiKey, Config(bufferSize: 8, getCarrierInfo: false));
     analytics.logEvent(name: 'MyApp startup');
   }
 
