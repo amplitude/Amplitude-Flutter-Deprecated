@@ -14,6 +14,7 @@ dependencies:
   package_info: "^0.4.0+3"
   http: "^0.12.0+2"
   crypto: "^2.0.6"
+  path: ^1.6.4
   sqflite: "^1.1.5"
   uuid: "^2.0.1"
 dev_dependencies:
