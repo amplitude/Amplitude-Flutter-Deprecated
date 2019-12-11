@@ -1,5 +1,6 @@
 ## 1.1.1
-* Migrate from AppLifecycleState.suspending to AppLifecycleState.detached. Cause suspending is deprecated.
+* Migrate from AppLifecycleState.suspending to AppLifecycleState.detached. Cause suspending is 
+deprecated. Thanks @otopba for fixing it.
 
 ## 1.1.0
 * add `device_manufacturer` info
