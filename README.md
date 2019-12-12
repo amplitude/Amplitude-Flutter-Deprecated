@@ -1,5 +1,7 @@
 # amplitude_flutter
 
+[![pub package](https://img.shields.io/pub/v/amplitude_flutter.svg)](https://pub.dartlang.org/packages/amplitude_flutter)
+
 The Official Amplitude Flutter plugin. Used to track events with [Amplitude](https://www.amplitude.com).
 
 ## Getting Started
