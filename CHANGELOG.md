@@ -1,3 +1,8 @@
+## 1.1.1
+* Migrated from AppLifecycleState.suspending to AppLifecycleState.detached. Cause suspending is 
+deprecated. Thanks @otopba for fixing it.
+* Fixed the possible crash while other permission is requested by other libraries.
+
 ## 1.1.0
 * add `device_manufacturer` info
 * add ability to retrieve carrier info

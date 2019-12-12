@@ -61,7 +61,7 @@ class Session with WidgetsBindingObserver {
     switch (state) {
       case AppLifecycleState.inactive:
       case AppLifecycleState.paused:
-      case AppLifecycleState.suspending:
+      case AppLifecycleState.detached:
         enterBackground();
         break;
       case AppLifecycleState.resumed:
