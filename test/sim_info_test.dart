@@ -3,6 +3,8 @@ import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
 void main() {
+  TestWidgetsFlutterBinding.ensureInitialized() as TestWidgetsFlutterBinding;
+
   final MethodChannel channel = MethodChannel('amplitude_flutter');
 
   // Register the mock handler.
