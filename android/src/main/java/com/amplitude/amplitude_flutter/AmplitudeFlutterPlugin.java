@@ -6,10 +6,15 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.telephony.TelephonyManager;
+import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 
+import io.flutter.embedding.engine.plugins.FlutterPlugin;
+import io.flutter.embedding.engine.plugins.activity.ActivityAware;
+import io.flutter.embedding.engine.plugins.activity.ActivityPluginBinding;
+import io.flutter.plugin.common.BinaryMessenger;
 import io.flutter.plugin.common.MethodCall;
 import io.flutter.plugin.common.MethodChannel;
 import io.flutter.plugin.common.MethodChannel.MethodCallHandler;
@@ -18,24 +23,30 @@ import io.flutter.plugin.common.PluginRegistry;
 import io.flutter.plugin.common.PluginRegistry.Registrar;
 
 /** AmplitudeFlutterPlugin */
-public class AmplitudeFlutterPlugin implements MethodCallHandler {
+public class AmplitudeFlutterPlugin implements FlutterPlugin, ActivityAware, MethodCallHandler {
+  private static final String TAG = AmplitudeFlutterPlugin.class.getSimpleName();
+
   String carrierName;
 
-  private final Activity mActivity;
-  private final TelephonyManager mTelephonyManager;
+  private MethodChannel mMethodChannel;
+  private Activity mActivity;
+  private TelephonyManager mTelephonyManager;
   private Result mResult;
   private static int READ_PHONE_STATE = 123;
+
+  public AmplitudeFlutterPlugin() {
+    Log.e(TAG, "AmplitudeFlutterPlugin: Initializing");
+  }
 
   private AmplitudeFlutterPlugin(Activity activity) {
     this.mActivity = activity;
     mTelephonyManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
   }
 
-  /** Plugin registration. */
+  /** Plugin registration. This's for Flutter SDK pre 1.12 support. */
   public static void registerWith(Registrar registrar) {
-    final MethodChannel channel = new MethodChannel(registrar.messenger(), "amplitude_flutter");
     final AmplitudeFlutterPlugin amplitudeFlutterPlugin = new AmplitudeFlutterPlugin(registrar.activity());
-    channel.setMethodCallHandler(amplitudeFlutterPlugin);
+    amplitudeFlutterPlugin.setupChannel(registrar.messenger());
 
     /** Adds a callback allowing the plugin to take part in handling incoming calls
      * to Activity#onRequestPermissionsResult(int, String[], int[])
@@ -56,6 +67,54 @@ public class AmplitudeFlutterPlugin implements MethodCallHandler {
   }
 
   @Override
+  public void onAttachedToEngine(FlutterPluginBinding binding) {
+    setupChannel(binding.getBinaryMessenger());
+  }
+
+  @Override
+  public void onDetachedFromEngine(FlutterPluginBinding binding) {
+    teardownChannel();
+  }
+
+  @Override
+  public void onAttachedToActivity(ActivityPluginBinding binding) {
+    mActivity = binding.getActivity();
+    mTelephonyManager = (TelephonyManager) mActivity.getSystemService(Context.TELEPHONY_SERVICE);
+
+    /** Adds a callback allowing the plugin to take part in handling incoming calls
+     * to Activity#onRequestPermissionsResult(int, String[], int[])
+     **/
+    binding.addRequestPermissionsResultListener(new PluginRegistry.RequestPermissionsResultListener() {
+      @Override
+      public boolean onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
+        if (requestCode == READ_PHONE_STATE) {
+          boolean permissionGranted = grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED;
+          processCarrierResult(permissionGranted);
+          return true;
+        } else {
+          // We don't care other permissions other than READ_PHONE_STATE
+          return false;
+        }
+      }
+    });
+  }
+
+  @Override
+  public void onDetachedFromActivityForConfigChanges() {
+
+  }
+
+  @Override
+  public void onReattachedToActivityForConfigChanges(ActivityPluginBinding binding) {
+
+  }
+
+  @Override
+  public void onDetachedFromActivity() {
+
+  }
+
+  @Override
   public void onMethodCall(MethodCall call, Result result) {
     mResult = result;
     if (call.method.equals("carrierName")) {
@@ -68,6 +127,16 @@ public class AmplitudeFlutterPlugin implements MethodCallHandler {
       result.notImplemented();
     }
     mResult = null;
+  }
+
+  private void setupChannel(BinaryMessenger messenger) {
+    mMethodChannel = new MethodChannel(messenger, "amplitude_flutter");
+    mMethodChannel.setMethodCallHandler(this);
+  }
+
+  private void teardownChannel() {
+    mMethodChannel.setMethodCallHandler(null);
+    mMethodChannel = null;
   }
 
   private void getCarrierInfoWithPermissions(Result result) {
