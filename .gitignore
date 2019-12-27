@@ -9,5 +9,4 @@
 build/
 
 main_dev.dart
-/pubspec.lock
 pubspec.lock
