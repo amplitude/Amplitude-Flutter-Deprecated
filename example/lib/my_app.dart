@@ -26,7 +26,7 @@ class _MyAppState extends State<MyApp> {
   @override
   void initState() {
     super.initState();
-    analytics = AmplitudeFlutter(widget.apiKey, Config(bufferSize: 8, getCarrierInfo: false));
+    analytics = AmplitudeFlutter(widget.apiKey, Config(bufferSize: 8, getCarrierInfo: true));
     analytics.logEvent(name: 'MyApp startup');
   }
 
