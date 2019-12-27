@@ -1,3 +1,6 @@
+## 1.1.3
+* Fix a problem that dart documentation can't be generated on pub.dev
+
 ## 1.1.2
 * Made changes to support the new Android plugins API (>= 1.12 Flutter SDK).
 * Updated Android example application with v2 Android embedding.
