@@ -1,12 +1,12 @@
 class Config {
-  Config(
-      {this.sessionTimeout = defaultSessionTimeout,
-      this.bufferSize = defaultBufferSize,
-      this.maxStoredEvents = defaultMaxStoredEvents,
-      this.flushPeriod = defaultFlushPeriod,
-      this.optOut = false,
-      this.getCarrierInfo = false,
-      });
+  Config({
+    this.sessionTimeout = defaultSessionTimeout,
+    this.bufferSize = defaultBufferSize,
+    this.maxStoredEvents = defaultMaxStoredEvents,
+    this.flushPeriod = defaultFlushPeriod,
+    this.optOut = false,
+    this.getCarrierInfo = false,
+  });
 
   final int sessionTimeout;
   final int bufferSize;

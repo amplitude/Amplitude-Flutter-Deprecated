@@ -14,7 +14,10 @@ import 'session.dart';
 class AmplitudeFlutter {
   AmplitudeFlutter(String apiKey, [this.config]) {
     config ??= Config();
-    provider = ServiceProvider(apiKey: apiKey, timeout: config.sessionTimeout,  getCarrierInfo: config.getCarrierInfo);
+    provider = ServiceProvider(
+        apiKey: apiKey,
+        timeout: config.sessionTimeout,
+        getCarrierInfo: config.getCarrierInfo);
     _init();
   }
 

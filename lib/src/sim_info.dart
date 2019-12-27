@@ -8,9 +8,9 @@ class SimInfo {
 
   static Future<String> get getCarrierName async {
     try {
-      final String carrierName  = await _channel.invokeMethod('carrierName');
+      final String carrierName = await _channel.invokeMethod('carrierName');
       return carrierName;
-    } on PlatformException catch(e) {
+    } on PlatformException catch (e) {
       print('error retreiving carrier info: ${e.message}');
       return '';
     }

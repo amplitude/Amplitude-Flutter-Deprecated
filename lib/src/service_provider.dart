@@ -6,7 +6,10 @@ import 'session.dart';
 import 'store.dart';
 
 class ServiceProvider {
-  ServiceProvider({@required String apiKey, @required int timeout, @required bool getCarrierInfo} ) {
+  ServiceProvider(
+      {@required String apiKey,
+      @required int timeout,
+      @required bool getCarrierInfo}) {
     client = Client(apiKey);
     deviceInfo = DeviceInfo(getCarrierInfo);
     store = Store();
