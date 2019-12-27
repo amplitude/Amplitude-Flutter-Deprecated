@@ -16,7 +16,7 @@ PODS:
 DEPENDENCIES:
   - amplitude_flutter (from `.symlinks/plugins/amplitude_flutter/ios`)
   - device_info (from `.symlinks/plugins/device_info/ios`)
-  - Flutter (from `.symlinks/flutter/ios`)
+  - Flutter (from `Flutter`)
   - package_info (from `.symlinks/plugins/package_info/ios`)
   - sqflite (from `.symlinks/plugins/sqflite/ios`)
 
@@ -30,7 +30,7 @@ EXTERNAL SOURCES:
   device_info:
     :path: ".symlinks/plugins/device_info/ios"
   Flutter:
-    :path: ".symlinks/flutter/ios"
+    :path: Flutter
   package_info:
     :path: ".symlinks/plugins/package_info/ios"
   sqflite:
@@ -38,12 +38,12 @@ EXTERNAL SOURCES:
 
 SPEC CHECKSUMS:
   amplitude_flutter: d6cc84a75b7f67fb7ce2d99415fc1692180224ed
-  device_info: 3ebad48f726348f69abd802f3334a8d1ed795fbd
+  device_info: cbf09d2ec12aa7110e0b09fabe54b5bd6c8efe74
   Flutter: 0e3d915762c693b495b44d77113d4970485de6ec
   FMDB: 2ce00b547f966261cd18927a3ddb07cb6f3db82a
-  package_info: 78cabb3c322943c55d39676f4a5bfc748c01d055
-  sqflite: ff1d9da63c06588cc8d1faf7256d741f16989d5a
+  package_info: 48b108e75b8802c2d5e126f208ef540561c98aef
+  sqflite: 4001a31ff81d210346b500c55b17f4d6c7589dd0
 
-PODFILE CHECKSUM: 359be8afa3dfdebe39e3a4bc51c91a84d066b5a2
+PODFILE CHECKSUM: f5bfd9ca129704ea1881a4fa17ea9c1adc9377f9
 
 COCOAPODS: 1.8.4
