@@ -1,3 +1,7 @@
+## 1.1.2
+* Made changes to support the new Android plugins API (>= 1.12 Flutter SDK).
+* Updated Android example application with v2 Android embedding.
+
 ## 1.1.1
 * Migrated from AppLifecycleState.suspending to AppLifecycleState.detached. Cause suspending is 
 deprecated. Thanks @otopba for fixing it.
