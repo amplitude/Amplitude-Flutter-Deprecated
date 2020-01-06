@@ -1,13 +1,15 @@
 .DS_Store
 .dart_tool/
 .vscode
-
 .packages
 .pub/
 .idea/
 
 build/
 doc/
+
+android/bin
+android/.classpath
 
 main_dev.dart
 pubspec.lock
