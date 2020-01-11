@@ -1,3 +1,6 @@
+## 1.1.4
+* Updated to use androidx for Android.
+
 ## 1.1.3
 * Fix a problem that dart documentation can't be generated on pub.dev
 
