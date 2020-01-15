@@ -1,3 +1,6 @@
+## 1.1.5
+* Include `language` property when reporting events.
+
 ## 1.1.4
 * Updated to use androidx for Android.
 
