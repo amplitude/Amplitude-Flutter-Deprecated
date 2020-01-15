@@ -1,4 +1,4 @@
-import 'package:amplitude_flutter/src/sim_info.dart';
+import 'package:amplitude_flutter/src/device_info_helper.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_test/flutter_test.dart';
 
@@ -26,13 +26,13 @@ void main() {
   });
 
   test('amplitude_flutter channel is setup with carrierName method', () async {
-    final String name = await SimInfo.getCarrierName;
+    final String name = await DeviceInfoHelper.getCarrierName;
     expect(name, equals('AT&T'));
   });
 
 // returns device model for iOS
   test('amplitude_flutter channel is setup with deviceModel', () async {
-    final String model = await SimInfo.getDeviceModel;
+    final String model = await DeviceInfoHelper.getDeviceModel;
     expect(model, equals('iPhone10,6'));
   });
 

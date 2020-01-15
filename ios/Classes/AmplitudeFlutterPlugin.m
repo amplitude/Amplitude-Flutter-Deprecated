@@ -5,9 +5,8 @@
 
 @implementation AmplitudeFlutterPlugin
 + (void)registerWithRegistrar:(NSObject<FlutterPluginRegistrar>*)registrar {
-  FlutterMethodChannel* channel = [FlutterMethodChannel
-      methodChannelWithName:@"amplitude_flutter"
-            binaryMessenger:[registrar messenger]];
+  FlutterMethodChannel* channel = [FlutterMethodChannel methodChannelWithName:@"amplitude_flutter"
+                                                              binaryMessenger:[registrar messenger]];
   AmplitudeFlutterPlugin* instance = [[AmplitudeFlutterPlugin alloc] init];
   [registrar addMethodCallDelegate:instance channel:channel];
 }
@@ -17,8 +16,15 @@
     NSString *strNative = [self carrierName];
     result(strNative);
   } else if ([@"deviceModel" isEqualToString:call.method]) {
-     NSString *strNative = [self deviceName];
+    NSString *strNative = [self deviceName];
     result(strNative);
+  } else if ([@"preferredLanguages" isEqualToString:call.method]) {
+    result([NSLocale preferredLanguages]);
+  } else if ([@"currentLocale" isEqualToString:call.method]){
+    NSString *locale = [[NSLocale currentLocale] objectForKey: NSLocaleCountryCode];
+    NSString *language = [[NSLocale currentLocale] objectForKey: NSLocaleLanguageCode];
+    NSString *formattedStr = [NSString stringWithFormat:@"%@-%@",language, locale];
+    result(formattedStr);
   } else {
     result(FlutterMethodNotImplemented);
   }

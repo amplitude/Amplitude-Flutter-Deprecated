@@ -5,11 +5,16 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.LocaleList;
 import android.telephony.TelephonyManager;
 import android.util.Log;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Locale;
 
 import io.flutter.embedding.engine.plugins.FlutterPlugin;
 import io.flutter.embedding.engine.plugins.activity.ActivityAware;
@@ -117,14 +122,25 @@ public class AmplitudeFlutterPlugin implements FlutterPlugin, ActivityAware, Met
   @Override
   public void onMethodCall(MethodCall call, Result result) {
     mResult = result;
-    if (call.method.equals("carrierName")) {
-      if (Build.VERSION.SDK_INT >= 23) {
-        getCarrierInfoWithPermissions(mResult);
-      } else {
-        processCarrierResult(true);
-      }
-    } else {
-      result.notImplemented();
+
+    switch (call.method) {
+      case "carrierName":
+        {
+          if (Build.VERSION.SDK_INT >= 23) {
+            getCarrierInfoWithPermissions(mResult);
+          } else {
+            processCarrierResult(true);
+          }
+        }
+        break;
+      case "preferredLanguages":
+        result.success(getPreferredLanguages());
+        break;
+      case "currentLocale":
+        result.success(getCurrentLocale());
+        break;
+      default:
+        result.notImplemented();
     }
     mResult = null;
   }
@@ -182,5 +198,24 @@ public class AmplitudeFlutterPlugin implements FlutterPlugin, ActivityAware, Met
       networkOperatorName = "null";
     }
     return networkOperatorName;
+  }
+
+  private String getCurrentLocale() {
+    return Locale.getDefault().toString();
+  }
+
+  private List<String> getPreferredLanguages() {
+    List<String> result = new ArrayList<String>();
+
+    if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
+      LocaleList list = LocaleList.getAdjustedDefault();
+      for(int i = 0; i < list.size(); i++){
+        result.add(list.get(i).toString());
+      }
+    } else {
+      result.add(getCurrentLocale());
+    }
+
+    return result;
   }
 }

@@ -4,7 +4,7 @@ import 'dart:io';
 import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
 
-import './sim_info.dart';
+import './device_info_helper.dart';
 
 class DeviceInfo {
   DeviceInfo(this.getCarrierInfo);
@@ -25,6 +25,7 @@ class DeviceInfo {
         deviceData.addAll(await _getDeviceModel());
       }
       deviceData.addAll(await _getApplicationInfo());
+      deviceData.addAll(await _getCurrentLocale());
       if (getCarrierInfo == true) {
         deviceData.addAll(await _getCarrierName());
       }
@@ -36,14 +37,19 @@ class DeviceInfo {
   }
 
   Future<Map<String, String>> _getCarrierName() async {
-    final String name = await SimInfo.getCarrierName;
+    final String name = await DeviceInfoHelper.getCarrierName;
     return <String, String>{'carrier': name};
   }
 
   // get iOS phone model
   Future<Map<String, String>> _getDeviceModel() async {
-    final String name = await SimInfo.getDeviceModel;
+    final String name = await DeviceInfoHelper.getDeviceModel;
     return <String, String>{'device_model': name};
+  }
+
+  Future<Map<String, String>> _getCurrentLocale() async {
+    final String name = await DeviceInfoHelper.currentLocale;
+    return <String, String>{'language': name};
   }
 
   Map<String, String> _parseAndroidInfo(AndroidDeviceInfo build) {
