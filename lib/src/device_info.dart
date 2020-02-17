@@ -40,27 +40,37 @@ class DeviceInfo {
   }
 
   Future<Map<String, String>> getAdvertisingInfo() async {
-    final String advertisingId = await DeviceInfoHelper.advertisingId;
+    if (_advData.isNotEmpty) {
+      return _advData;
+    }
 
+    final String advertisingId = await DeviceInfoHelper.advertisingId;
     if (advertisingId == null) {
-      return <String, String>{};
+      _advData = <String, String>{};
+      return _advData;
     }
 
     if (Platform.isAndroid) {
-      return <String, String> { 'androidADID': advertisingId };
+      _advData = <String, String> { 'androidADID': advertisingId };
     } else if (Platform.isIOS) {
-      return <String, String> {
+      _advData = <String, String> {
         'ios_idfa': advertisingId,
         'ios_idfv': (await deviceInfoPlugin.iosInfo).identifierForVendor
       };
     } else {
-      return <String, String>{};
+      _advData = <String, String>{};
     }
+
+    return _advData;
   }
 
   Future<Map<String, String>> _getCarrierName() async {
     final String name = await DeviceInfoHelper.getCarrierName;
-    return <String, String>{'carrier': name};
+    if (name != null && name.isNotEmpty) {
+      return <String, String>{'carrier': name};
+    } else {
+      return <String, String>{};
+    }
   }
 
   // get iOS phone model

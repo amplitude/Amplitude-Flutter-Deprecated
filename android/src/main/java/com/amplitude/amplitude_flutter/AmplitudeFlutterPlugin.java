@@ -42,7 +42,7 @@ public class AmplitudeFlutterPlugin implements FlutterPlugin, ActivityAware, Met
     private MethodChannel mMethodChannel;
     private Activity mActivity;
     private TelephonyManager mTelephonyManager;
-    private Result mResult;
+    private Result mCarrierResult;
     private static int READ_PHONE_STATE = 123;
 
     public AmplitudeFlutterPlugin() {
@@ -129,12 +129,11 @@ public class AmplitudeFlutterPlugin implements FlutterPlugin, ActivityAware, Met
 
     @Override
     public void onMethodCall(MethodCall call, final Result result) {
-        mResult = result;
-
         switch (call.method) {
             case "carrierName": {
+                mCarrierResult = result;
                 if (Build.VERSION.SDK_INT >= 23) {
-                    getCarrierInfoWithPermissions(mResult);
+                    getCarrierInfoWithPermissions(mCarrierResult);
                 } else {
                     processCarrierResult(true);
                 }
@@ -174,7 +173,6 @@ public class AmplitudeFlutterPlugin implements FlutterPlugin, ActivityAware, Met
             default:
                 result.notImplemented();
         }
-        mResult = null;
     }
 
     private void setupChannel(BinaryMessenger messenger) {
@@ -193,6 +191,7 @@ public class AmplitudeFlutterPlugin implements FlutterPlugin, ActivityAware, Met
         if (permissionGranted) {
             carrierName = getCarrierName();
             result.success(carrierName);
+            mCarrierResult = null;
         } else {
             ActivityCompat.requestPermissions(this.mActivity, new String[]{Manifest.permission.READ_PHONE_STATE},
                     READ_PHONE_STATE);
@@ -210,18 +209,18 @@ public class AmplitudeFlutterPlugin implements FlutterPlugin, ActivityAware, Met
 
     private void processCarrierResult(boolean permission) {
         // We only proceed only when permission is triggered when `device` method is called.
-        // That means mResult is not null.
-        if (mResult == null) {
+        // That means mCarrierResult is not null.
+        if (mCarrierResult == null) {
             return;
         }
 
         if (permission) {
             String name = getCarrierName();
-            mResult.success(name);
+            mCarrierResult.success(name);
         } else {
-            mResult.error("PERMISSION_DENIED", "PERMISSION_DENIED", null);
+            mCarrierResult.error("PERMISSION_DENIED", "PERMISSION_DENIED", null);
         }
-        mResult = null;
+        mCarrierResult = null;
     }
 
     private String getCarrierName() {
