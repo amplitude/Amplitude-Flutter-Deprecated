@@ -3,6 +3,7 @@ import 'dart:io';
 
 import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
+import 'package:uuid/uuid.dart';
 
 import './device_info_helper.dart';
 
@@ -11,6 +12,8 @@ class DeviceInfo {
   bool getCarrierInfo;
   static final DeviceInfoPlugin deviceInfoPlugin = DeviceInfoPlugin();
   Map<String, String> _deviceData = <String, String>{};
+  Map<String, String> _advData = <String, String>{};
+
   Future<Map<String, String>> getPlatformInfo() async {
     if (_deviceData.isNotEmpty) {
       return _deviceData;
@@ -34,6 +37,25 @@ class DeviceInfo {
     }
     _deviceData = deviceData;
     return deviceData;
+  }
+
+  Future<Map<String, String>> getAdvertisingInfo() async {
+    final String advertisingId = await DeviceInfoHelper.advertisingId;
+
+    if (advertisingId == null) {
+      return <String, String>{};
+    }
+
+    if (Platform.isAndroid) {
+      return <String, String> { 'androidADID': advertisingId };
+    } else if (Platform.isIOS) {
+      return <String, String> {
+        'ios_idfa': advertisingId,
+        'ios_idfv': (await deviceInfoPlugin.iosInfo).identifierForVendor
+      };
+    } else {
+      return <String, String>{};
+    }
   }
 
   Future<Map<String, String>> _getCarrierName() async {
@@ -60,20 +82,22 @@ class DeviceInfo {
       'device_manufacturer': build.manufacturer,
       'device_model': build.model,
       'device_id': build.androidId,
-      'android_id': build.androidId,
       'platform': 'Android'
     };
   }
 
   Map<String, String> _parseIosInfo(IosDeviceInfo data) {
     developer.log('buildDataIos", $data');
+    String deviceId = data.identifierForVendor;
+    if (deviceId == null || deviceId == '00000000-0000-0000-0000-000000000000') {
+      deviceId = Uuid().v4() + 'R';
+    }
     return <String, String>{
       'os_name': data.systemName,
       'os_version': data.systemVersion,
       'device_brand': null,
       'device_manufacturer': 'Apple',
-      'device_id': data.identifierForVendor,
-      'idfv': data.identifierForVendor,
+      'device_id': deviceId,
       'platform': 'iOS'
     };
   }

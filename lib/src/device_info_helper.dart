@@ -35,4 +35,12 @@ class DeviceInfoHelper {
     final String locale = await _channel.invokeMethod('currentLocale');
     return locale;
   }
+
+  /// Returns a [String] for adverstingId.
+  /// iOS: idfa
+  /// Android: androidADID
+  static Future<String> get advertisingId async {
+    final String advertisingId = await _channel.invokeMethod('advertisingId');
+    return advertisingId;
+  }
 }
