@@ -16,9 +16,6 @@
     if ([@"carrierName" isEqualToString:call.method]) {
         NSString *strNative = [self carrierName];
         result(strNative);
-    } else if ([@"deviceModel" isEqualToString:call.method]) {
-        NSString *strNative = [self deviceName];
-        result(strNative);
     } else if ([@"preferredLanguages" isEqualToString:call.method]) {
         result([NSLocale preferredLanguages]);
     } else if ([@"currentLocale" isEqualToString:call.method]){
@@ -48,14 +45,6 @@
     } else {
         return @"SIM State not available";
     }
-}
-
-- (NSString*)deviceName {
-    struct utsname systemInfo;
-    uname(&systemInfo);
-    
-    return [NSString stringWithCString:systemInfo.machine
-                              encoding:NSUTF8StringEncoding];
 }
 
 - (NSString*)advertisingId {

@@ -15,12 +15,6 @@ class DeviceInfoHelper {
     }
   }
 
-// retreives the model type for the device
-  static Future<String> get getDeviceModel async {
-    final String deviceModel = await _channel.invokeMethod('deviceModel');
-    return deviceModel;
-  }
-
   /// Returns a [List] of locales from the device
   /// the first in the list should be the current one set on the device
   /// for example iOS **['en-GB', 'es-GB'] or for Android **['en_GB, 'es_GB]**

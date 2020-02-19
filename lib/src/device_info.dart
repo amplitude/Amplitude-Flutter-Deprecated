@@ -25,7 +25,6 @@ class DeviceInfo {
         deviceData = _parseAndroidInfo(await deviceInfoPlugin.androidInfo);
       } else if (Platform.isIOS) {
         deviceData = _parseIosInfo(await deviceInfoPlugin.iosInfo);
-        deviceData.addAll(await _getDeviceModel());
       }
       deviceData.addAll(await _getApplicationInfo());
       deviceData.addAll(await _getCurrentLocale());
@@ -73,12 +72,6 @@ class DeviceInfo {
     }
   }
 
-  // get iOS phone model
-  Future<Map<String, String>> _getDeviceModel() async {
-    final String name = await DeviceInfoHelper.getDeviceModel;
-    return <String, String>{'device_model': name};
-  }
-
   Future<Map<String, String>> _getCurrentLocale() async {
     final String name = await DeviceInfoHelper.currentLocale;
     return <String, String>{'language': name};
@@ -87,7 +80,8 @@ class DeviceInfo {
   Map<String, String> _parseAndroidInfo(AndroidDeviceInfo build) {
     developer.log('buildDataAndroid", $build');
     return <String, String>{
-      'os_name': 'Android ${build.version.release}',
+      'os_name': 'android',
+      'os_version': build.version.release,
       'device_brand': build.brand,
       'device_manufacturer': build.manufacturer,
       'device_model': build.model,
@@ -107,6 +101,7 @@ class DeviceInfo {
       'os_version': data.systemVersion,
       'device_brand': null,
       'device_manufacturer': 'Apple',
+      'device_model': data.model,
       'device_id': deviceId,
       'platform': 'iOS'
     };
