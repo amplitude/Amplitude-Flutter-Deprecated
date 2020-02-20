@@ -24,13 +24,8 @@
         NSString *formattedStr = [NSString stringWithFormat:@"%@-%@",language, locale];
         result(formattedStr);
     } else if ([@"advertisingId" isEqualToString:call.method]) {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            
-            NSString *advId = [self advertisingId];
-            dispatch_async(dispatch_get_main_queue(), ^(void){
-                result(advId);
-            });
-        });
+        NSString *advId = [self advertisingId];
+        result(advId);
     } else {
         result(FlutterMethodNotImplemented);
     }
