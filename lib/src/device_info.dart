@@ -5,7 +5,9 @@ import 'package:device_info/device_info.dart';
 import 'package:package_info/package_info.dart';
 import 'package:uuid/uuid.dart';
 
-import './device_info_helper.dart';
+import 'constants.dart';
+import 'device_info_helper.dart';
+import 'metadata_store.dart';
 
 class DeviceInfo {
   DeviceInfo(this.getCarrierInfo);
@@ -22,9 +24,9 @@ class DeviceInfo {
     Map<String, String> deviceData;
     try {
       if (Platform.isAndroid) {
-        deviceData = _parseAndroidInfo(await deviceInfoPlugin.androidInfo);
+        deviceData = await _parseAndroidInfo(await deviceInfoPlugin.androidInfo);
       } else if (Platform.isIOS) {
-        deviceData = _parseIosInfo(await deviceInfoPlugin.iosInfo);
+        deviceData = await _parseIosInfo(await deviceInfoPlugin.iosInfo);
       }
       deviceData.addAll(await _getApplicationInfo());
       deviceData.addAll(await _getCurrentLocale());
@@ -53,8 +55,8 @@ class DeviceInfo {
       _advData = <String, String> { 'androidADID': advertisingId };
     } else if (Platform.isIOS) {
       _advData = <String, String> {
-        'ios_idfa': advertisingId,
-        'ios_idfv': (await deviceInfoPlugin.iosInfo).identifierForVendor
+        Constants.kPayloadIosIdfa: advertisingId,
+        Constants.kPayloadIosIdfv: (await deviceInfoPlugin.iosInfo).identifierForVendor
       };
     } else {
       _advData = <String, String>{};
@@ -77,25 +79,47 @@ class DeviceInfo {
     return <String, String>{'language': name};
   }
 
-  Map<String, String> _parseAndroidInfo(AndroidDeviceInfo build) {
+  Future<Map<String, String>> _parseAndroidInfo(AndroidDeviceInfo build) async {
     developer.log('buildDataAndroid", $build');
+    
+    final String deviceId = await MetadataStore().getDeviceId();
+
+    // If deviceId is null and invalid, we will use AAID or
+    // generate a NEW random number followed by 'R'
+    if (deviceId == null || Constants.kInvalidAndroidDeviceIds.contains(deviceId)) {
+      String deviceId = _advData[Constants.kPayloadAndroidAaid];
+      deviceId ??= Uuid().v4() + 'R';
+
+      // Persist deviceId locally.
+      MetadataStore().setDeviceId(deviceId);
+    }
+
     return <String, String>{
       'os_name': 'android',
       'os_version': build.version.release,
       'device_brand': build.brand,
       'device_manufacturer': build.manufacturer,
       'device_model': build.model,
-      'device_id': build.androidId,
+      'device_id': deviceId,
       'platform': 'Android'
     };
   }
 
-  Map<String, String> _parseIosInfo(IosDeviceInfo data) {
+  Future<Map<String, String>> _parseIosInfo(IosDeviceInfo data) async {
     developer.log('buildDataIos", $data');
-    String deviceId = data.identifierForVendor;
-    if (deviceId == null || deviceId == '00000000-0000-0000-0000-000000000000') {
-      deviceId = Uuid().v4() + 'R';
+
+    String deviceId = await MetadataStore().getDeviceId();
+
+    // If deviceId is null and invalid, we will use idfa or
+    // generate a NEW random number followed by 'R'
+    if (deviceId == null || Constants.kInvalidIosDeviceIds.contains(deviceId)) {
+      deviceId = _advData[Constants.kPayloadIosIdfa];
+      deviceId ??= Uuid().v4() + 'R';
+
+      // Persist deviceId locally.
+      MetadataStore().setDeviceId(deviceId);
     }
+
     return <String, String>{
       'os_name': data.systemName,
       'os_version': data.systemVersion,
