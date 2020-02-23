@@ -1,3 +1,9 @@
+## 1.2.0
+* Can track advertising Id now.
+* Will use a random UUID for device Id if ads tracking is disabled on the phone.
+* Device Id will be persisted locally to keep consistency.
+* Fixed wrong value population for os related properties in an event.
+
 ## 1.1.5
 * Include `language` property when reporting events.
 
