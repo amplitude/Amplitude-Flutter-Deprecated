@@ -17,6 +17,19 @@ In the example below - replace the string `API_KEY` with your API Key.
 In addition, a [`Config`](https://github.com/amplitude/Amplitude-Flutter/blob/master/lib/src/config.dart) object can be passed as a constructor argument for additional options.
 NOTE: This plugin's methods should only be called from the main isolate.
 
+### Advertising Id tracking in Android
+In iOS, to enable Advertising Id tracking, you will need to add `AdSupport.framework` in your project setting page. 
+<img src="https://github.com/amplitude/Amplitude-Flutter/blob/master/add_dep_ios.png" width="800">
+
+In Android, firstly you need to add `com.google.android.gms:play-services-ads` as a dependency in your `build.gradle`.
+<img src="https://github.com/amplitude/Amplitude-Flutter/blob/master/add_dep_android.png" width="500">
+
+Secondly, since we don't assume user's project will depend on this library, we use reflection to invoke its APIs. So the names of its classes can't be changed since reflection will use original name to find the class. You also need to add exception rules into your `proguard-android.txt` or `proguard-rules.pro`.
+
+```
+-keep class com.google.android.gms.ads.** { *; }
+```
+
 ### Adding Carrier Information
 You can set an option in the config object titled `getCarrierInfo` to retreive carrier name for a device. This is the ( [`Config`](https://github.com/amplitude/Amplitude-Flutter/blob/master/lib/src/config.dart)). This object can be passed as a constructor argument for additional options.
 
