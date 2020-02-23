@@ -17,7 +17,7 @@ In the example below - replace the string `API_KEY` with your API Key.
 In addition, a [`Config`](https://github.com/amplitude/Amplitude-Flutter/blob/master/lib/src/config.dart) object can be passed as a constructor argument for additional options.
 NOTE: This plugin's methods should only be called from the main isolate.
 
-### Advertising Id tracking in Android
+### Advertising Id Tracking
 In iOS, to enable Advertising Id tracking, you will need to add `AdSupport.framework` in your project setting page. 
 <img src="https://github.com/amplitude/Amplitude-Flutter/blob/master/add_dep_ios.png" width="800">
 
