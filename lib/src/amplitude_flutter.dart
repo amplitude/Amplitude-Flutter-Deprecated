@@ -49,9 +49,15 @@ class AmplitudeFlutter {
       return Future.value(null);
     }
 
-    final Event event =
-        Event(name, sessionId: session.getSessionId(), props: properties)
-          ..addProps(await deviceInfo.getPlatformInfo());
+    final Event event = Event(name, sessionId: session.getSessionId(), props: properties);
+
+    final Map<String, String> advertisingValues = await deviceInfo.getAdvertisingInfo();
+    if (advertisingValues != null) {
+      event.addProps(<String, dynamic>{
+        'api_properties': advertisingValues
+      });
+    }
+    event.addProps(await deviceInfo.getPlatformInfo());
 
     if (userId != null) {
       event.addProp('user_id', userId);

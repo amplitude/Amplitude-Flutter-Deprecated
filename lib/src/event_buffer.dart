@@ -59,6 +59,8 @@ class EventBuffer {
         events.map((e) => e.toPayload()).toList();
     final eventIds = events.map((e) => e.id).toList();
 
+    debugPrint('Uploading events...');
+    debugPrint(payload.toString());
     final status = await client.post(payload);
     switch (status) {
       case 200:

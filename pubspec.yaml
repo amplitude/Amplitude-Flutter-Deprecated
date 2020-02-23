@@ -4,16 +4,17 @@ version: 1.1.5
 homepage: https://github.com/amplitude/Amplitude-Flutter
 
 environment:
-  sdk: ">=2.1.0 <3.0.0"
+  sdk: ">=2.2.0 <3.0.0"
   flutter: ">=1.10.0 <2.0.0"
 dependencies:
   flutter:
     sdk: flutter
-  device_info: "^0.4.0+1"
-  package_info: "^0.4.0+3"
-  http: "^0.12.0+2"
   crypto: "^2.0.6"
-  path: ^1.6.4
+  device_info: "^0.4.1+4"
+  http: "^0.12.0+2"
+  package_info: "^0.4.0+13"
+  path: "^1.6.4"
+  shared_preferences: "^0.5.6+2"
   sqflite: "^1.1.5"
   uuid: "^2.0.1"
 dev_dependencies:

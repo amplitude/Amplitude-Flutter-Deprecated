@@ -29,12 +29,4 @@ void main() {
     final String name = await DeviceInfoHelper.getCarrierName;
     expect(name, equals('AT&T'));
   });
-
-// returns device model for iOS
-  test('amplitude_flutter channel is setup with deviceModel', () async {
-    final String model = await DeviceInfoHelper.getDeviceModel;
-    expect(model, equals('iPhone10,6'));
-  });
-
-
 }
