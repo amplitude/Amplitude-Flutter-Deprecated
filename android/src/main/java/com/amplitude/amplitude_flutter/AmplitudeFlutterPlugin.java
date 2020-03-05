@@ -51,7 +51,8 @@ public class AmplitudeFlutterPlugin implements FlutterPlugin, ActivityAware, Met
 
     private AmplitudeFlutterPlugin(Activity activity) {
         this.mActivity = activity;
-        mTelephonyManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
+        //TODO: revert when Shell modifications were merged (https://github.com/nubank/mini-meta-repo/pull/3700)
+		//mTelephonyManager = (TelephonyManager) activity.getSystemService(Context.TELEPHONY_SERVICE);
     }
 
     /**
