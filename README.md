@@ -5,7 +5,6 @@
 The Official Amplitude Flutter plugin. Used to track events with [Amplitude](https://www.amplitude.com).
 
 ## Getting Started
-
 To use this plugin, add `amplitude_flutter` as a [dependency in your pubspec.yaml file](https://flutter.io/platform-plugins/).
 
 Find the [API key](https://amplitude.zendesk.com/hc/en-us/articles/235649848-Settings#project-general-settings) for your Amplitude project under your project settings.
@@ -17,7 +16,7 @@ In the example below - replace the string `API_KEY` with your API Key.
 In addition, a [`Config`](https://github.com/amplitude/Amplitude-Flutter/blob/master/lib/src/config.dart) object can be passed as a constructor argument for additional options.
 NOTE: This plugin's methods should only be called from the main isolate.
 
-### Advertising Id Tracking
+## Advertising Id Tracking
 In iOS, to enable Advertising Id tracking, you will need to add `AdSupport.framework` in your project setting page. 
 <img src="https://github.com/amplitude/Amplitude-Flutter/blob/master/add_dep_ios.png" width="800">
 
@@ -30,7 +29,7 @@ Secondly, since we don't assume user's project will depend on this library, we u
 -keep class com.google.android.gms.ads.** { *; }
 ```
 
-### Adding Carrier Information
+## Adding Carrier Information
 You can set an option in the config object titled `getCarrierInfo` to retreive carrier name for a device. This is the ( [`Config`](https://github.com/amplitude/Amplitude-Flutter/blob/master/lib/src/config.dart)). This object can be passed as a constructor argument for additional options.
 
 If you set `getCarrierInfo` to `true` - **recipients on Android devices will see a dialog box asking them for perimssion** . This dialog will say
@@ -41,7 +40,7 @@ By default the Config will set `getCarrierInfo` will default to false.
 
 And example can be found here [`Example`](https://github.com/amplitude/Amplitude-Flutter/blob/chores/add-missing-device-data-wip/example/lib/my_app.dart#L30).
 
-### Example
+## Example
 
 ```dart
 import 'package:amplitude_flutter/amplitude_flutter.dart';
@@ -88,3 +87,6 @@ Future<void> example() async {
   analytics.logRevenue(revenue);
 }
 ```
+
+# Need Help? #
+If you have any problems or issues over our SDK, feel free to create a github issue or submit a request on [Amplitude Help](https://help.amplitude.com/hc/en-us/requests/new).
