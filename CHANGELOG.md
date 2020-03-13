@@ -1,3 +1,7 @@
+## 1.2.1
+
+* Prepare for 1.0.0 version of sensors and package_info. ([dart_lsc](http://github.com/amirh/dart_lsc))
+
 ## 1.2.0
 * Can track advertising Id now.
 * Will use a random UUID for device Id if ads tracking is disabled on the phone.
