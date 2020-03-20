@@ -37,4 +37,11 @@ class DeviceInfoHelper {
     final String advertisingId = await _channel.invokeMethod('advertisingId');
     return advertisingId;
   }
+
+  /// Returns a [String] for deviceModel.
+  /// This is only for iOS, android not needed.
+  static Future<String> get deviceModel async {
+    final String deviceModel = await _channel.invokeMethod('deviceModel');
+    return deviceModel;
+  }
 }
