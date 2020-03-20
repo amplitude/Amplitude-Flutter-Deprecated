@@ -120,12 +120,13 @@ class DeviceInfo {
       MetadataStore().setDeviceId(deviceId);
     }
 
+    final String deviceModel = await DeviceInfoHelper.deviceModel;
     return <String, String>{
       'os_name': data.systemName,
       'os_version': data.systemVersion,
       'device_brand': null,
       'device_manufacturer': 'Apple',
-      'device_model': data.model,
+      'device_model': deviceModel,
       'device_id': deviceId,
       'platform': 'iOS'
     };
