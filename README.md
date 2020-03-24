@@ -20,7 +20,7 @@ NOTE: This plugin's methods should only be called from the main isolate.
 In iOS, to enable Advertising Id tracking, you will need to add `AdSupport.framework` in your project setting page. 
 <img src="https://github.com/amplitude/Amplitude-Flutter/blob/master/add_dep_ios.png" width="800">
 
-In Android, firstly you need to add `com.google.android.gms:play-services-ads` as a dependency in your `build.gradle`.
+In Android, firstly you need to add `com.google.android.gms:play-services-ads` as a dependency in your `build.gradle`. If you use Google Mobile Ads SDK version 17.0.0 above. You need to add [`AD_MANAGER_APP`](https://developers.google.com/ad-manager/mobile-ads-sdk/android/quick-start#update_your_androidmanifestxml) into your `androidmanifest.xml` file.
 <img src="https://github.com/amplitude/Amplitude-Flutter/blob/master/add_dep_android.png" width="500">
 
 Secondly, since we don't assume user's project will depend on this library, we use reflection to invoke its APIs. So the names of its classes can't be changed since reflection will use original name to find the class. You also need to add exception rules into your `proguard-android.txt` or `proguard-rules.pro`.
