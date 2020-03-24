@@ -1,3 +1,6 @@
+## 1.2.1
+* Fix a problem that `device type` shows empty value for iOS devices.
+
 ## 1.2.0
 * Can track advertising Id now.
 * Will use a random UUID for device Id if ads tracking is disabled on the phone.
