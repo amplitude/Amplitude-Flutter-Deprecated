@@ -37,4 +37,7 @@ class MockStore implements Store {
     final List<Event> popped = db.sublist(0, count);
     return Future.value(popped);
   }
+
+  @override
+  String get dbFile => 'amp.db';
 }

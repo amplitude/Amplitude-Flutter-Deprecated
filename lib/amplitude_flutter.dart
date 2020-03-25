@@ -6,3 +6,4 @@ export 'src/config.dart';
 export 'src/identify.dart';
 export 'src/revenue.dart';
 export 'src/service_provider.dart';
+export 'src/store.dart';
