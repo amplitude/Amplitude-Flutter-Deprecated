@@ -21,8 +21,8 @@ class Store {
     _init();
   }
 
-  static const Map<String, Store> _instances = {};
-  static Database _db;
+  static final Map<String, Store> _instances = {};
+  Database _db;
   final String dbFile;
   int length = 0;
 
