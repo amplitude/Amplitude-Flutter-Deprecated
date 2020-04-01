@@ -11,16 +11,19 @@ const String COL_EVENT_TYPE = 'event_type';
 const String COL_TIMESTAMP = 'timestamp';
 const String COL_SESSION_ID = 'session_id';
 const String COL_PROPS = 'props_json';
+const String DEFAULT_DB_NAME = 'amp.db';
 
 class Store {
-  factory Store() => _instance ??= Store._();
-  Store._() {
+  factory Store({String dbFile = DEFAULT_DB_NAME}) =>
+      _instances.putIfAbsent(dbFile, () => Store._(dbFile));
+
+  Store._(this.dbFile) {
     _init();
   }
 
-  static Store _instance;
-  static Database _db;
-  static const dbFile = 'amp.db';
+  static final Map<String, Store> _instances = {};
+  Database _db;
+  final String dbFile;
   int length = 0;
 
   Future<int> add(Event event) async {

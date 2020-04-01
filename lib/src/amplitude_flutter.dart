@@ -21,7 +21,6 @@ class AmplitudeFlutter {
     _init();
   }
 
-  @visibleForTesting
   AmplitudeFlutter.private(this.provider, this.config) {
     _init();
   }
