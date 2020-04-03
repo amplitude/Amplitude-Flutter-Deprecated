@@ -1,3 +1,6 @@
+## 1.3.0
+* Give user the abilities to customize the DB store. Thanks @reinaldomoreira!
+
 ## 1.2.1
 * Fix a problem that `device type` shows empty value for iOS devices.
 
