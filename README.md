@@ -37,15 +37,15 @@ Secondly, since we don't assume user's project will depend on this library, we u
 ```
 
 ## Adding Carrier Information
-You can set an option in the config object titled `getCarrierInfo` to retreive carrier name for a device. This is the ( [`Config`](https://github.com/amplitude/Amplitude-Flutter/blob/master/lib/src/config.dart)). This object can be passed as a constructor argument for additional options.
+You can set an option in the config object titled `getCarrierInfo` to retrieve carrier name for a device. This is the ( [`Config`](https://github.com/amplitude/Amplitude-Flutter/blob/master/lib/src/config.dart)). This object can be passed as a constructor argument for additional options.
 
-If you set `getCarrierInfo` to `true` - **recipients on Android devices will see a dialog box asking them for perimssion** . This dialog will say
+If you set `getCarrierInfo` to `true` - **recipients on Android devices will see a dialog box asking them for permission** . This dialog will say
 `allow app to make and manage phone calls`. This is a message sent from the android operating system for the `READ_PHONE_STATE` permission and carrier info is grouped into this.
 If the user denies permission - carrier information will not be retrieved. The new android operating systems require asking a user for permission before retrieving this information.
 
 By default the Config will set `getCarrierInfo` will default to false.
 
-And example can be found here [`Example`](https://github.com/amplitude/Amplitude-Flutter/blob/chores/add-missing-device-data-wip/example/lib/my_app.dart#L30).
+An example can be found here [`Example`](https://github.com/amplitude/Amplitude-Flutter/blob/chores/add-missing-device-data-wip/example/lib/my_app.dart#L30).
 
 ## Example
 
@@ -95,5 +95,5 @@ Future<void> example() async {
 }
 ```
 
-# Need Help? #
+# Need Help?
 If you have any problems or issues over our SDK, feel free to create a github issue or submit a request on [Amplitude Help](https://help.amplitude.com/hc/en-us/requests/new).
