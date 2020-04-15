@@ -38,6 +38,8 @@ class EventBuffer {
       return;
     }
 
+    // If timestamp is not set, set it to now.
+    event.timestamp ??= TimeUtils().currentTime();
     await store.add(event);
 
     if (length >= config.bufferSize) {
