@@ -1,3 +1,8 @@
+## 1.4.0
+* Add support for sending automatic session events. (session start and session end).
+* By default this feature is turned off. 
+* Please enable it in the config during initialization. e.g. `AmplitudeFlutter('API_KEY', Config(trackSessionEvents: true))` 
+
 ## 1.3.0
 * Give user the abilities to customize the DB store. Thanks @reinaldomoreira!
 
