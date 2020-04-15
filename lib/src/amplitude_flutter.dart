@@ -1,5 +1,7 @@
 import 'dart:async';
 
+import 'package:amplitude_flutter/src/constants.dart';
+import 'package:amplitude_flutter/src/time_utils.dart';
 import 'package:flutter/foundation.dart';
 
 import 'config.dart';
@@ -41,19 +43,39 @@ class AmplitudeFlutter {
   /// Log an event
   Future<void> logEvent(
       {@required String name,
-      Map<String, dynamic> properties = const <String, String>{}}) async {
-    session.refresh();
-
+      Map<String, dynamic> properties = const <String, String>{}, int timestamp}) async {
     if (config.optOut) {
       return Future.value(null);
     }
 
+    // Current event ISN'T session event.
+    // It's the time we run auto session logic.
+    if (Constants.kSessionEndEvent != name && Constants.kSessionStartEvent != name) {
+      final bool needRenew = config.trackSessionEvents &&
+          !session.withinSession(TimeUtils().currentTime());
+
+      // End old session.
+      if (needRenew) {
+        _logSessionEvent(Constants.kSessionEndEvent, session.lastActivity);
+      }
+      // Always run refresh to update session states.
+      session.refresh();
+      // Start new session.
+      if (needRenew) {
+        _logSessionEvent(Constants.kSessionStartEvent, session.lastActivity);
+      }
+    }
+
     final Event event = Event(name, sessionId: session.getSessionId(), props: properties);
 
-    final Map<String, String> advertisingValues = await deviceInfo.getAdvertisingInfo();
-    if (advertisingValues != null) {
+    final Map<String, String> apiProps = await deviceInfo.getAdvertisingInfo();
+    if (apiProps != null) {
+      if (event.props.containsKey('api_properties')) {
+        apiProps.addAll(event.props['api_properties']);
+      }
+
       event.addProps(<String, dynamic>{
-        'api_properties': advertisingValues
+        'api_properties': apiProps
       });
     }
     event.addProps(await deviceInfo.getPlatformInfo());
@@ -62,6 +84,7 @@ class AmplitudeFlutter {
       event.addProp('user_id', userId);
     }
 
+    event.timestamp = timestamp ?? TimeUtils().currentTime();
     return buffer.add(event);
   }
 
@@ -103,11 +126,24 @@ class AmplitudeFlutter {
   /// Manually flush events in the buffer
   Future<void> flushEvents() => buffer.flush();
 
+  void _logSessionEvent(String sessionEvent, int timestamp) {
+    final Map<String, Map<String, String>> properties =
+    <String, Map<String, String>>{
+      'api_properties': <String, String>{
+        'special': sessionEvent,
+      }
+    };
+    logEvent(name: sessionEvent, timestamp: timestamp, properties: properties);
+  }
+
   void _init() {
     deviceInfo = provider.deviceInfo;
     session = provider.session;
     buffer = EventBuffer(provider, config);
 
     session.start();
+    if (config.trackSessionEvents) {
+      _logSessionEvent(Constants.kSessionStartEvent, TimeUtils().currentTime());
+    }
   }
 }

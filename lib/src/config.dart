@@ -6,6 +6,7 @@ class Config {
     this.flushPeriod = defaultFlushPeriod,
     this.optOut = false,
     this.getCarrierInfo = false,
+    this.trackSessionEvents = false,
   });
 
   final int sessionTimeout;
@@ -14,6 +15,7 @@ class Config {
   final int flushPeriod;
   final bool optOut;
   final bool getCarrierInfo;
+  final bool trackSessionEvents;
 
   static const defaultSessionTimeout = 300000;
   static const defaultBufferSize = 10;

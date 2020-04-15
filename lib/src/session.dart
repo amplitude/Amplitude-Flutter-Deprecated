@@ -42,7 +42,7 @@ class Session with WidgetsBindingObserver {
 
   void refresh() {
     final int now = _time.currentTime();
-    if (!_withinSession(now)) {
+    if (!withinSession(now)) {
       sessionStart = now;
     }
     lastActivity = now;
@@ -72,7 +72,7 @@ class Session with WidgetsBindingObserver {
     }
   }
 
-  bool _withinSession(int timestamp) {
+  bool withinSession(int timestamp) {
     if (lastActivity != null && !_inForeground) {
       return (timestamp - lastActivity) < timeout;
     }
