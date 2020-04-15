@@ -13,4 +13,7 @@ class Constants {
   static const kPayloadAndroidAaid = 'androidADID';
   static const kPayloadIosIdfa = 'ios_idfa';
   static const kPayloadIosIdfv = 'ios_idfv';
+
+  static const kSessionStartEvent = 'session_start';
+  static const kSessionEndEvent = 'session_end';
 }

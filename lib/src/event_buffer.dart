@@ -38,7 +38,6 @@ class EventBuffer {
       return;
     }
 
-    event.timestamp = TimeUtils().currentTime();
     await store.add(event);
 
     if (length >= config.bufferSize) {
