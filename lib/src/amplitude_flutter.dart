@@ -51,16 +51,17 @@ class AmplitudeFlutter {
     // Current event ISN'T session event.
     // It's the time we run auto session logic.
     if (Constants.kSessionEndEvent != name && Constants.kSessionStartEvent != name) {
-      final bool needRefresh = config.trackSessionEvents &&
+      final bool needRenew = config.trackSessionEvents &&
           !session.withinSession(TimeUtils().currentTime());
 
-      if (config.trackSessionEvents && needRefresh) {
-        // End old session.
+      // End old session.
+      if (needRenew) {
         _logSessionEvent(Constants.kSessionEndEvent, session.lastActivity);
-
-        session.refresh();
-
-        // Start new session.
+      }
+      // Always run refresh to update session states.
+      session.refresh();
+      // Start new session.
+      if (needRenew) {
         _logSessionEvent(Constants.kSessionStartEvent, session.lastActivity);
       }
     }
