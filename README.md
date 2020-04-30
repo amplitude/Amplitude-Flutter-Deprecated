@@ -5,6 +5,18 @@
   <br />
 </p>
 
+# Warning: This Flutter SDK is deprecated!
+
+We developed a new Flutter SDK bridging calls to our native SDKs, and this SDK won't be supported anymore. Here's the repo for the new Flutter SDK [Amplitude-Flutter-New](https://github.com/amplitude/Amplitude-Flutter-New). The new SDK will start from v2.0.0. However, you can still continue to use version v1.4.0 which was implemented with the old style.
+
+We made a decision because of following reasons.
+1. Our native SDKs (iOS, Android) are tested throughly and trusted.
+2. You will get access to much more features.
+3. You will get new faetures faster if it's added to native SDKs.
+4. It will save our time to duplicate logic for each APIs from native SDKs.
+
+To migrate, since the we wrote the our API in a better way, you might need to change some API calls. Sorry for the inconvenience, but we try to make this change as fast as possible since we believe this is the right way to develop and maintain our Flutter SDK.
+
 # amplitude_flutter
 
 [![pub package](https://img.shields.io/pub/v/amplitude_flutter.svg)](https://pub.dartlang.org/packages/amplitude_flutter)
